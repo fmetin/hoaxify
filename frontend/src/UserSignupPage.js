@@ -25,7 +25,7 @@ class UserSignupPage extends React.Component {
             displayName,
             password
         }
-        axios.post("http://localhost:8080/v1/create-user", body);
+        axios.post("/v1/create-user", body);
     }
 
 
