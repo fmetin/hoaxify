@@ -1,0 +1,6 @@
+
+frontend/package-lock.json
+ws/.idea/*
+frontend/node_modules/*
+ws/target/*
+*.iml
