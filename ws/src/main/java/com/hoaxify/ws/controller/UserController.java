@@ -1,14 +1,20 @@
 package com.hoaxify.ws.controller;
 
 import com.hoaxify.ws.dto.CreateUserRequestDto;
-import com.hoaxify.ws.repository.UserRepository;
 import com.hoaxify.ws.service.UserService;
+import com.hoaxify.ws.shared.RestException;
 import com.hoaxify.ws.shared.RestResponse;
-import lombok.extern.slf4j.Slf4j;
+import com.hoaxify.ws.shared.RestResponseHeader;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class UserController {
@@ -20,8 +26,23 @@ public class UserController {
     }
 
     @PostMapping("/v1/create-user")
-    public RestResponse<Void> createUser(@RequestBody CreateUserRequestDto request) {
+    public ResponseEntity<?> createUser(@Valid @RequestBody CreateUserRequestDto request) {
         userService.createUser(request);
-        return new RestResponse<>();
+        return ResponseEntity.ok(new RestResponse<>());
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public RestResponse<Void> handleValidationException(MethodArgumentNotValidException e) {
+        Map<String, String> validationErrors = new HashMap<>();
+        for (FieldError fieldError :
+                e.getBindingResult().getFieldErrors()) {
+            validationErrors.put(fieldError.getField(), fieldError.getDefaultMessage());
+        }
+        return new RestResponse<>(
+                new RestResponseHeader("USR-0001",
+                        null),
+                null, validationErrors
+        );
     }
 }
