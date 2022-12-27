@@ -3,6 +3,7 @@ package com.hoaxify.ws.controller;
 import com.hoaxify.ws.dto.CreateUserRequestDto;
 import com.hoaxify.ws.repository.UserRepository;
 import com.hoaxify.ws.service.UserService;
+import com.hoaxify.ws.shared.RestResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +20,8 @@ public class UserController {
     }
 
     @PostMapping("/v1/create-user")
-    public void createUser(@RequestBody CreateUserRequestDto request) {
+    public RestResponse<Void> createUser(@RequestBody CreateUserRequestDto request) {
         userService.createUser(request);
+        return new RestResponse<>();
     }
 }

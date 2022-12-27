@@ -6,6 +6,8 @@ import com.hoaxify.ws.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.*;
+import org.springframework.security.crypto.bcrypt.*;
 
 @Service
 @Slf4j
@@ -13,9 +15,13 @@ public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
 
+    private final PasswordEncoder passwordEncoder;
+
+
     @Autowired
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
+        this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
     @Override
@@ -24,10 +30,10 @@ public class UserServiceImpl implements UserService{
         userRepository.save(user);
     }
 
-    private static User mapToUserEntity(CreateUserRequestDto requestDto) {
+    private User mapToUserEntity(CreateUserRequestDto requestDto) {
         User user = new User();
         user.setUsername(requestDto.getUsername());
-        user.setPassword(requestDto.getPassword());
+        user.setPassword(passwordEncoder.encode(requestDto.getPassword()));
         user.setDisplayName(requestDto.getDisplayName());
         return user;
     }

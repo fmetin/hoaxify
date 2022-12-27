@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
+import './bootstrap-override.scss'
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import UserSignupPage from './UserSignupPage';
+import UserSignupPage from './pages/UserSignupPage';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
