@@ -30,6 +30,11 @@ public class UserServiceImpl implements UserService{
         userRepository.save(user);
     }
 
+    @Override
+    public long countByUsername(String username) {
+        return userRepository.countByUsername(username);
+    }
+
     private User mapToUserEntity(CreateUserRequestDto requestDto) {
         User user = new User();
         user.setUsername(requestDto.getUsername());

@@ -18,6 +18,15 @@ class UserSignupPage extends React.Component {
         const { name, value } = event.target;
         const errors = { ...this.state.errors };
         errors[name] = undefined;
+        if (name === "password" || name === "passwordRepeat") {
+            if (name === "password" && value !== this.state.passwordRepeat) {
+                errors.passwordRepeat = 'Password mismatch.';
+            } else if (name === "passwordRepeat" && value !== this.state.password) {
+                errors.passwordRepeat = 'Password mismatch.';
+            } else {
+                errors.passwordRepeat = undefined;
+            }
+        }
         this.setState({
             [name]: value,
             errors
@@ -52,14 +61,14 @@ class UserSignupPage extends React.Component {
             <div className="container">
                 <form>
                     <h1 className="text-center">Sign Up</h1>
-                    <Input name="username" label="Username" error={errors.username} onChange={this.onChange}/>
-                    <Input name="displayName" label="Display Name" error={errors.displayName} onChange={this.onChange}/>
-                    <Input name="password" label="Password" error={errors.password} onChange={this.onChange} type="password"/>
-                    <Input name="passwordRepeat" label="Password Repeat" error={errors.passwordRepeat} onChange={this.onChange} type="password"/>
+                    <Input name="username" label="Username" error={errors.username} onChange={this.onChange} />
+                    <Input name="displayName" label="Display Name" error={errors.displayName} onChange={this.onChange} />
+                    <Input name="password" label="Password" error={errors.password} onChange={this.onChange} type="password" />
+                    <Input name="passwordRepeat" label="Password Repeat" error={errors.passwordRepeat} onChange={this.onChange} type="password" />
                     <div className="text-center">
                         <button className="btn btn-primary"
                             onClick={this.onClickSignUp}
-                            disabled={pendingApiCall}>
+                            disabled={pendingApiCall || errors.passwordRepeat !== undefined}>
                             {pendingApiCall && <span className="spinner-border spinner-border-sm"></span>}
 
                             Sign Up

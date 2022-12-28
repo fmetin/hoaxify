@@ -1,5 +1,6 @@
 package com.hoaxify.ws.dto;
 
+import com.hoaxify.ws.annotation.UniqueUserName;
 import com.hoaxify.ws.rc.HoaxifyResponseCodes;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;

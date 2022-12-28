@@ -5,4 +5,6 @@ import com.hoaxify.ws.dto.CreateUserRequestDto;
 public interface UserService {
 
     void createUser(CreateUserRequestDto requestDto);
+
+    long countByUsername(String username);
 }
