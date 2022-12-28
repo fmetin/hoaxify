@@ -1,6 +1,7 @@
 package com.hoaxify.ws.controller;
 
 import com.hoaxify.ws.dto.CreateUserRequestDto;
+import com.hoaxify.ws.rc.HoaxifyResponseCodes;
 import com.hoaxify.ws.service.UserService;
 import com.hoaxify.ws.shared.RestException;
 import com.hoaxify.ws.shared.RestResponse;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.hoaxify.ws.rc.HoaxifyResponseCodes.*;
 
 @RestController
 public class UserController {
@@ -40,8 +43,8 @@ public class UserController {
             validationErrors.put(fieldError.getField(), fieldError.getDefaultMessage());
         }
         return new RestResponse<>(
-                new RestResponseHeader("USR-0001",
-                        null),
+                new RestResponseHeader(VALIDATION_ERROR.getResponseCode(),
+                        VALIDATION_ERROR.getResponseMessage()),
                 null, validationErrors
         );
     }

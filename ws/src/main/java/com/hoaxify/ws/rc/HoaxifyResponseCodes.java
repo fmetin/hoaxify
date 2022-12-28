@@ -2,8 +2,11 @@ package com.hoaxify.ws.rc;
 
 import com.hoaxify.ws.shared.RestException;
 
+import static com.hoaxify.ws.rc.HoaxifyMessages.*;
+
 public class HoaxifyResponseCodes {
-    public static RestException USERNAME_VALIDATION = new RestException("USR-0001", "Username is empty or invalid.");
-    public static RestException DISPLAY_NAME_VALIDATION_ERROR = new RestException("USR-0002", "Display name is empty or invalid.");
-    public static RestException USER_NAME_NOT_UNIQUE = new RestException("USR-0003", "Username must be unique.");
+    public static RestException VALIDATION_ERROR = new RestException("VLD-0001", "{validation.error}");
+    public static RestException VALIDATION_CONSTRAINT_USERNAME_NOTNULL_ERROR = new RestException("USR-0001", VALIDATION_CONSTRAINT_USERNAME_NOTNULL);
+    public static RestException VALIDATION_CONSTRAINT_DISPLAYNAME_NOTNULL_ERROR = new RestException("USR-0002", VALIDATION_CONSTRAINT_DISPLAYNAME_NOTNULL);
+    public static RestException VALIDATION_CONSTRAINT_UNIQUEUSERNAME_ERROR = new RestException("USR-0003", VALIDATION_CONSTRAINT_UNIQUEUSERNAME);
 }
