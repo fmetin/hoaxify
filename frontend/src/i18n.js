@@ -10,7 +10,8 @@ i18next.use(initReactI18next).init({
                 'username': 'Username',
                 'displayName': 'Display Name',
                 'password': 'Password',
-                'passwordRepeat': 'Password Repeat'
+                'passwordRepeat': 'Password Repeat',
+                'login': 'Login'
             }
         },
         tr: {
@@ -20,11 +21,12 @@ i18next.use(initReactI18next).init({
                 'username': 'Kullanıcı adı',
                 'displayName': 'Tercih Edilen İsim',
                 'password': 'Şifre',
-                'passwordRepeat': 'Şifreyi Tekrarla'
+                'passwordRepeat': 'Şifreyi Tekrarla',
+                'login': 'Giriş Yap'
             }
         }
     },
-    fallbackLng: 'en',
+    fallbackLng: 'tr',
     ns: ['translations'],
     defaultNS: 'translations',
     keySeperator: false,
