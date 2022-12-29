@@ -35,6 +35,11 @@ public class UserServiceImpl implements UserService{
         return userRepository.countByUsername(username);
     }
 
+    @Override
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
     private User mapToUserEntity(CreateUserRequestDto requestDto) {
         User user = new User();
         user.setUsername(requestDto.getUsername());

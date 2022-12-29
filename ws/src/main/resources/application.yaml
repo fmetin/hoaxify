@@ -1,7 +1,4 @@
 spring:
   datasource:
-    url: jdbc:h2:./devdb
+    url: jdbc:h2:mem:testdb
     username: fmetin
-  jpa:
-    hibernate:
-      ddl-auto: update
