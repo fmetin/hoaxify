@@ -1,5 +1,6 @@
 package com.hoaxify.ws.service;
 
+import com.hoaxify.ws.dto.AuthResponseDto;
 import com.hoaxify.ws.entity.User;
 import com.hoaxify.ws.shared.RestResponse;
 import com.hoaxify.ws.shared.RestResponseHeader;
@@ -26,7 +27,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void auth(String authorization) throws AuthenticationException {
+    public AuthResponseDto auth(String authorization) throws AuthenticationException {
         String base64encoded = authorization.split("Basic ")[1];
         String decoded = new String(Base64.getDecoder().decode(base64encoded));
         String[] parts = decoded.split(":");
@@ -39,5 +40,12 @@ public class AuthServiceImpl implements AuthService {
 
         if (!passwordEncoder.matches(password, user.getPassword()))
             throw new AuthenticationException();
+
+        AuthResponseDto authResponseDto = new AuthResponseDto();
+        authResponseDto.setUsername(user.getUsername());
+        authResponseDto.setDisplayName(user.getDisplayName());
+        authResponseDto.setImage(user.getImage());
+
+        return authResponseDto;
     }
 }

@@ -1,5 +1,6 @@
 package com.hoaxify.ws.controller;
 
+import com.hoaxify.ws.dto.AuthResponseDto;
 import com.hoaxify.ws.service.AuthService;
 import com.hoaxify.ws.service.UserService;
 import com.hoaxify.ws.shared.RestResponse;
@@ -32,7 +33,7 @@ public class AuthController {
         }
 
         try {
-            authService.auth(authorization);
+            return ResponseEntity.ok(new RestResponse<>(new RestResponseHeader(), authService.auth(authorization), null));
         } catch (Exception e) {
             RestResponse<Void> restResponse = new RestResponse<>(
                     new RestResponseHeader("401", "Unauthorized"),
@@ -40,7 +41,5 @@ public class AuthController {
                     null);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(restResponse);
         }
-
-        return ResponseEntity.ok().build();
     }
 }
