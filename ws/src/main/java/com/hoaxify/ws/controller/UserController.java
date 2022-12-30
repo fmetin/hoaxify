@@ -34,18 +34,5 @@ public class UserController {
         return ResponseEntity.ok(new RestResponse<>());
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public RestResponse<Void> handleValidationException(MethodArgumentNotValidException e) {
-        Map<String, String> validationErrors = new HashMap<>();
-        for (FieldError fieldError :
-                e.getBindingResult().getFieldErrors()) {
-            validationErrors.put(fieldError.getField(), fieldError.getDefaultMessage());
-        }
-        return new RestResponse<>(
-                new RestResponseHeader(VALIDATION_ERROR.getResponseCode(),
-                        VALIDATION_ERROR.getResponseMessage()),
-                null, validationErrors
-        );
-    }
+
 }

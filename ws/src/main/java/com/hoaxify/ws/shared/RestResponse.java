@@ -13,7 +13,7 @@ public class RestResponse<T> {
 
     private T detail;
 
-    private Map<String, String> validationErrors = new HashMap<>();
+    private Map<String, String> validationErrors;
 
     public RestResponse(RestResponseHeader header, T detail, Map<String, String> validationErrors) {
         this.header = header;

@@ -1,10 +1,10 @@
 package com.hoaxify.ws.conf;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,10 +18,12 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfiguration {
 
     private final UserAuthService authService;
+    private final DelegatedAuthenticationEntryPoint delegatedAuthenticationEntryPoint;
 
     @Autowired
-    public SecurityConfiguration(UserAuthService authService) {
+    public SecurityConfiguration(UserAuthService authService, @Qualifier("delegatedAuthenticationEntryPoint") DelegatedAuthenticationEntryPoint delegatedAuthenticationEntryPoint) {
         this.authService = authService;
+        this.delegatedAuthenticationEntryPoint = delegatedAuthenticationEntryPoint;
     }
 
     @Bean
@@ -29,7 +31,7 @@ public class SecurityConfiguration {
         http.csrf().disable();
 //        http.cors().disable();
 
-        http.httpBasic().authenticationEntryPoint((request, response, authException) -> response.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase()));
+        http.httpBasic().authenticationEntryPoint(delegatedAuthenticationEntryPoint).and().exceptionHandling();
 
         http.authorizeHttpRequests()
                 .requestMatchers(HttpMethod.POST, "/v1/auth").authenticated()
