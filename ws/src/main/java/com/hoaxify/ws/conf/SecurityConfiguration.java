@@ -1,7 +1,6 @@
 package com.hoaxify.ws.conf;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -21,7 +20,7 @@ public class SecurityConfiguration {
     private final DelegatedAuthenticationEntryPoint delegatedAuthenticationEntryPoint;
 
     @Autowired
-    public SecurityConfiguration(UserAuthService authService, @Qualifier("delegatedAuthenticationEntryPoint") DelegatedAuthenticationEntryPoint delegatedAuthenticationEntryPoint) {
+    public SecurityConfiguration(UserAuthService authService, DelegatedAuthenticationEntryPoint delegatedAuthenticationEntryPoint) {
         this.authService = authService;
         this.delegatedAuthenticationEntryPoint = delegatedAuthenticationEntryPoint;
     }
