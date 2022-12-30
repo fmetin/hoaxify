@@ -1,5 +1,6 @@
 package com.hoaxify.ws.shared;
 
+import com.hoaxify.ws.conf.Translator;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +19,9 @@ public class RestException extends Exception {
         this.responseMessage = responseMessage;
     }
 
-//    public String getResponseMessage(){
-//        return Translator.toLocale(this.responseMessage);
-//    }
+    public String getResponseMessage() {
+        return Translator.toLocale(responseMessage);
+    }
+
+
 }

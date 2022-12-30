@@ -1,6 +1,5 @@
 package com.hoaxify.ws.entity;
 
-import com.hoaxify.ws.annotation.UniqueUserName;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -19,15 +18,14 @@ public class User {
     @Id
     @GeneratedValue
     private long id;
-    @NotNull(message = VALIDATION_CONSTRAINT_USERNAME_NOTNULL)
-    @Size(min = 4, max = 255, message = VALIDATION_CONSTRAINT_USERNAME_SIZE)
+    @NotNull(message = MSG_VALIDATION_CONSTRAINT_USERNAME_NOTNULL)
+    @Size(min = 4, max = 255, message = MSG_VALIDATION_CONSTRAINT_USERNAME_SIZE)
     private String username;
-    @NotNull(message = VALIDATION_CONSTRAINT_DISPLAYNAME_NOTNULL)
+    @NotNull(message = MSG_VALIDATION_CONSTRAINT_DISPLAYNAME_NOTNULL)
     private String displayName;
-    @NotNull(message = VALIDATION_CONSTRAINT_PASSWORD_NOTNULL)
-    @Pattern(regexp="^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$", message = VALIDATION_CONSTRAINT_PASSWORD_PATTERN)
+    @NotNull(message = MSG_VALIDATION_CONSTRAINT_PASSWORD_NOTNULL)
+    @Pattern(regexp="^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$", message = MSG_VALIDATION_CONSTRAINT_PASSWORD_PATTERN)
     private String password;
-
     private String image;
 
 }

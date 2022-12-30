@@ -1,7 +1,6 @@
 package com.hoaxify.ws.dto;
 
 import com.hoaxify.ws.annotation.UniqueUserName;
-import com.hoaxify.ws.rc.HoaxifyMessages;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -12,13 +11,13 @@ import static com.hoaxify.ws.rc.HoaxifyMessages.*;
 @Data
 public class CreateUserRequestDto {
 
-    @NotNull(message = VALIDATION_CONSTRAINT_USERNAME_NOTNULL)
-    @Size(min = 4, max = 255, message = VALIDATION_CONSTRAINT_USERNAME_SIZE)
+    @NotNull(message = MSG_VALIDATION_CONSTRAINT_USERNAME_NOTNULL)
+    @Size(min = 4, max = 255, message = MSG_VALIDATION_CONSTRAINT_USERNAME_SIZE)
     @UniqueUserName
     private String username;
-    @NotNull(message = VALIDATION_CONSTRAINT_DISPLAYNAME_NOTNULL)
+    @NotNull(message = MSG_VALIDATION_CONSTRAINT_DISPLAYNAME_NOTNULL)
     private String displayName;
-    @NotNull(message = VALIDATION_CONSTRAINT_PASSWORD_NOTNULL)
-    @Pattern(regexp="^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$", message = VALIDATION_CONSTRAINT_PASSWORD_PATTERN)
+    @NotNull(message = MSG_VALIDATION_CONSTRAINT_PASSWORD_NOTNULL)
+    @Pattern(regexp="^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$", message = MSG_VALIDATION_CONSTRAINT_PASSWORD_PATTERN)
     private String password;
 }
