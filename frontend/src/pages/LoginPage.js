@@ -2,20 +2,47 @@ import React from "react";
 import { withTranslation } from "react-i18next";
 import { login } from '../api/apiCall';
 import Input from "../component/Input";
+import axios from "axios";
+import ButtonWithProgress from "../component/ButtonWithProgress";
 
 class LoginPage extends React.Component {
     state = {
         username: null,
         password: null,
-        errors: {}
+        errors: {},
+        loginError: null,
+        pendingApiCall: false
     }
+    componentDidMount() {
+        axios.interceptors.request.use(
+            request => {
+                this.setState({
+                    pendingApiCall: true,
+                    loginError: undefined
+                });
+                return request;
+            });
+
+        axios.interceptors.response.use(
+            response => {
+                this.setState({ pendingApiCall: false });
+                return response;
+            },
+            error => {
+                this.setState({ pendingApiCall: false });
+                throw error;
+            });
+
+    }
+
     onChange = event => {
         const { name, value } = event.target;
         const errors = { ...this.state.errors };
         errors[name] = undefined;
         this.setState({
             [name]: value,
-            errors
+            errors,
+            loginError: undefined
         })
     }
 
@@ -26,37 +53,37 @@ class LoginPage extends React.Component {
             username,
             password
         }
-        this.setState({ pendingApiCall: true });
 
         try {
             const response = await login(body);
+            this.setState({ loginError: undefined })
         } catch (error) {
-            if (error.response.data.validationErrors) {
-                this.setState({ errors: error.response.data.validationErrors })
+            if (error.response.data.header) {
+                this.setState({ loginError: error.response.data.header.responseMessage })
             }
         }
-        this.setState({ pendingApiCall: false });
     }
 
 
 
     render() {
-        const { pendingApiCall, errors } = this.state;
+        const { pendingApiCall, errors, loginError, username, password } = this.state;
         const { t } = this.props;
+        const buttonDisabled = !(username && password);
         return (
             <div className="container">
                 <form>
                     <h1 className="text-center">{t('login')}</h1>
                     <Input name="username" label={t('username')} error={errors.username} onChange={this.onChange} />
                     <Input name="password" label={t('password')} error={errors.password} onChange={this.onChange} type="password" />
-                    <div className="text-center">
-                        <button className="btn btn-primary"
-                            onClick={this.onClickLogin}
-                            disabled={pendingApiCall}>
-                            {pendingApiCall && <span className="spinner-border spinner-border-sm"></span>}
-                            {t('login')}
-                        </button>
-                    </div>
+                    {loginError && <div className="alert alert-danger">
+                        {loginError}
+                    </div>}
+                    <ButtonWithProgress
+                        onClick={this.onClickLogin}
+                        disabled={pendingApiCall || buttonDisabled}
+                        pendingApiCall={pendingApiCall}
+                        text={t('login')} />
                 </form>
             </div>
         );

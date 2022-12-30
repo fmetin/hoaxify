@@ -14,6 +14,10 @@ public class HoaxifyUserDetails implements UserDetails {
         this.user = user;
     }
 
+    public User getUser() {
+        return user;
+    }
+
     User user;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

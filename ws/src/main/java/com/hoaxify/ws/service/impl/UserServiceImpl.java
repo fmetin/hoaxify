@@ -1,8 +1,9 @@
-package com.hoaxify.ws.service;
+package com.hoaxify.ws.service.impl;
 
 import com.hoaxify.ws.dto.CreateUserRequestDto;
 import com.hoaxify.ws.entity.User;
 import com.hoaxify.ws.repository.UserRepository;
+import com.hoaxify.ws.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,7 @@ import org.springframework.security.crypto.password.*;
 
 @Service
 @Slf4j
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
