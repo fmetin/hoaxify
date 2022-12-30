@@ -20,6 +20,11 @@ public class Translator {
         return bundleMessageSource.getMessage(fixText(code), null, locale);
     }
 
+    public static String toLocaleWithArgs(String code, String[] args) {
+        Locale locale = LocaleContextHolder.getLocale();
+        return bundleMessageSource.getMessage(fixText(code), args, locale);
+    }
+
     public static String fixText(String text) {
         return text.substring(1, text.length() - 1);
     }
