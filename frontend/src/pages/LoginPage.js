@@ -10,30 +10,9 @@ class LoginPage extends React.Component {
         username: null,
         password: null,
         errors: {},
-        loginError: null,
-        pendingApiCall: false
+        loginError: null
     }
-    componentDidMount() {
-        axios.interceptors.request.use(
-            request => {
-                this.setState({
-                    pendingApiCall: true,
-                    loginError: undefined
-                });
-                return request;
-            });
-
-        axios.interceptors.response.use(
-            response => {
-                this.setState({ pendingApiCall: false });
-                return response;
-            },
-            error => {
-                this.setState({ pendingApiCall: false });
-                throw error;
-            });
-
-    }
+    
 
     onChange = event => {
         const { name, value } = event.target;
@@ -67,8 +46,8 @@ class LoginPage extends React.Component {
 
 
     render() {
-        const { pendingApiCall, errors, loginError, username, password } = this.state;
-        const { t } = this.props;
+        const { errors, loginError, username, password } = this.state;
+        const { t, pendingApiCall } = this.props;
         const buttonDisabled = !(username && password);
         return (
             <div className="container">
