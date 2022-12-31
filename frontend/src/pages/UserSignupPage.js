@@ -3,6 +3,7 @@ import { signup, changeLanguage } from '../api/apiCall'
 import Input from "../component/Input";
 import { withTranslation } from "react-i18next";
 import ButtonWithProgress from "../component/ButtonWithProgress";
+import { withApiProgress } from "../shared/ApiProgress";
 
 class UserSignupPage extends React.Component {
 
@@ -17,6 +18,7 @@ class UserSignupPage extends React.Component {
 
     onChange = event => {
         const { name, value } = event.target;
+        //...this.state.errors all k,v pairs
         const errors = { ...this.state.errors };
         errors[name] = undefined;
         if (name === "password" || name === "passwordRepeat") {
@@ -85,4 +87,5 @@ class UserSignupPage extends React.Component {
 
 // high order component
 const UserSignupPageTranslation = withTranslation()(UserSignupPage)
-export default UserSignupPageTranslation;
+const UserSignupPageWithApiProgress = withApiProgress(UserSignupPageTranslation, '/v1/create-user')
+export default UserSignupPageWithApiProgress;
