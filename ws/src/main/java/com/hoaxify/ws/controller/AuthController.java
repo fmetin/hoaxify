@@ -7,7 +7,6 @@ import com.hoaxify.ws.entity.User;
 import com.hoaxify.ws.shared.RestResponse;
 import com.hoaxify.ws.shared.RestResponseHeader;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 

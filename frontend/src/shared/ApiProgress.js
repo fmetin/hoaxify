@@ -15,13 +15,13 @@ export function withApiProgress(WrappedComponent, apiPath) {
         };
 
         componentDidMount() {
-            axios.interceptors.request.use(
+            this.requestInterceptor = axios.interceptors.request.use(
                 request => {
                     this.updateApicall(request.url, true);
                     return request;
                 });
 
-            axios.interceptors.response.use(
+            this.responseInterceptor = axios.interceptors.response.use(
                 response => {
                     this.updateApicall(response.config.url, false);
                     return response;
@@ -31,6 +31,11 @@ export function withApiProgress(WrappedComponent, apiPath) {
                     throw error;
                 });
 
+        }
+
+        componentWillUnmount() {
+            axios.interceptors.request.eject(this.requestInterceptor);
+            axios.interceptors.response.eject(this.responseInterceptor);
         }
 
         updateApicall(url, inProgress) {

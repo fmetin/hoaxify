@@ -1,9 +1,8 @@
 import React from "react";
 import { withTranslation } from "react-i18next";
 import { login } from '../api/apiCall';
-import Input from "../component/Input";
-import axios from "axios";
 import ButtonWithProgress from "../component/ButtonWithProgress";
+import Input from "../component/Input";
 import { withApiProgress } from "../shared/ApiProgress";
 
 class LoginPage extends React.Component {
@@ -13,7 +12,7 @@ class LoginPage extends React.Component {
         errors: {},
         loginError: null
     }
-    
+
 
     onChange = event => {
         const { name, value } = event.target;
@@ -33,10 +32,11 @@ class LoginPage extends React.Component {
             username,
             password
         }
-
+        const {push} = this.props.history;
+        this.setState({ loginError: undefined });
         try {
-            const response = await login(body);
-            this.setState({ loginError: undefined })
+            await login(body);
+            push('/');
         } catch (error) {
             if (error.response.data.header) {
                 this.setState({ loginError: error.response.data.header.responseMessage })
@@ -59,11 +59,14 @@ class LoginPage extends React.Component {
                     {loginError && <div className="alert alert-danger">
                         {loginError}
                     </div>}
-                    <ButtonWithProgress
-                        onClick={this.onClickLogin}
-                        disabled={pendingApiCall || buttonDisabled}
-                        pendingApiCall={pendingApiCall}
-                        text={t('login')} />
+                    <div className="text-center">
+                        <ButtonWithProgress
+                            onClick={this.onClickLogin}
+                            disabled={pendingApiCall || buttonDisabled}
+                            pendingApiCall={pendingApiCall}
+                            text={t('login')}
+                        />
+                    </div>
                 </form>
             </div>
         );

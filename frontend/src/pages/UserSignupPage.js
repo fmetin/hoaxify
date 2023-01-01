@@ -74,11 +74,13 @@ class UserSignupPage extends React.Component {
                     <Input name="displayName" label={t('displayName')} error={errors.displayName} onChange={this.onChange} />
                     <Input name="password" label={t('password')} error={errors.password} onChange={this.onChange} type="password" />
                     <Input name="passwordRepeat" label={t('passwordRepeat')} error={t(errors.passwordRepeat)} onChange={this.onChange} type="password" />
-                    <ButtonWithProgress
-                        onClick={this.onClickSignUp}
-                        disabled={pendingApiCall || errors.passwordRepeat !== undefined}
-                        pendingApiCall={pendingApiCall}
-                        text={t('sign.up')} />
+                    <div className="text-center">
+                        <ButtonWithProgress
+                            onClick={this.onClickSignUp}
+                            disabled={pendingApiCall || errors.passwordRepeat !== undefined}
+                            pendingApiCall={pendingApiCall}
+                            text={t('sign.up')} />
+                    </div>
                 </form>
             </div>
         );
