@@ -1,17 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import './bootstrap-override.scss'
-import reportWebVitals from './reportWebVitals';
-import UserSignupPage from './pages/UserSignupPage';
-import './i18n'
-import LoginPage from './pages/LoginPage';
-import LanguageSelector from './component/LanguageSelector';
-import ApiProgress from './shared/ApiProgress';
+import './bootstrap-override.scss';
 import App from './container/App';
+import './i18n';
+import './index.css';
+import reportWebVitals from './reportWebVitals';
+import AuthenticationContext from './shared/AuthenticationContext';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <App></App>
+  <AuthenticationContext>
+    <App></App>
+  </AuthenticationContext>
 );
 
 // If you want to start measuring performance in your app, pass a function
