@@ -1,3 +1,4 @@
+import { use } from "i18next";
 import React from "react";
 import { withTranslation } from "react-i18next";
 import { login } from '../api/apiCall';
@@ -28,15 +29,17 @@ class LoginPage extends React.Component {
     onClickLogin = async event => {
         event.preventDefault();
         const { username, password } = this.state;
+        const { onLoginSuccess } = this.props;
         const body = {
             username,
             password
         }
-        const {push} = this.props.history;
+        const { push } = this.props.history;
         this.setState({ loginError: undefined });
         try {
             await login(body);
             push('/');
+            onLoginSuccess(username);
         } catch (error) {
             if (error.response.data.header) {
                 this.setState({ loginError: error.response.data.header.responseMessage })

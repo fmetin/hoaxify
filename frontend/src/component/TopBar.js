@@ -5,7 +5,39 @@ import { withTranslation } from 'react-i18next';
 
 class TopBar extends Component {
     render() {
-        const { t } = this.props;
+        const { t, isLoggedIn, username, onLogoutSuccess } = this.props;
+
+        let links = (
+            <ul className="navbar-nav ms-auto">
+                <li>
+                    <Link className="nav-link" to="/login">
+                        {t('login')}
+                    </Link>
+                </li>
+                <li>
+                    <Link className="nav-link" to="/signup">
+                        {t('sign.up')}
+                    </Link>
+                </li>
+            </ul>
+        );
+
+        if (isLoggedIn) {
+            links = (
+                <ul className="navbar-nav ms-auto">
+                    <li>
+                        <Link className="nav-link" to={`/user/${username}`}>
+                            {username}
+                        </Link>
+                    </li>
+                    <li>
+                        <Link className="nav-link" to="/login" onClick={onLogoutSuccess}>
+                            {t('logout')}
+                        </Link>
+                    </li>
+                </ul>
+            );
+        }
         return (
             <div className="shadow-sm bg-light mb-2">
                 <nav className="navbar navbar-light container navbar-expand">
@@ -13,18 +45,7 @@ class TopBar extends Component {
                         <img src={logo} width="60" alt="Hoaxify Logo" />
                         Hoaxify
                     </Link>
-                    <ul className="navbar-nav ms-auto">
-                        <li>
-                            <Link className="nav-link" to="/login">
-                                {t('login')}
-                            </Link>
-                        </li>
-                        <li>
-                            <Link className="nav-link" to="/signup">
-                                {t('sign.up')}
-                            </Link>
-                        </li>
-                    </ul>
+                    {links}
                 </nav>
             </div>
 
