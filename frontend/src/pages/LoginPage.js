@@ -1,14 +1,15 @@
-import { use } from "i18next";
 import React from "react";
 import { withTranslation } from "react-i18next";
+import { connect } from "react-redux";
 import { login } from '../api/apiCall';
 import ButtonWithProgress from "../component/ButtonWithProgress";
 import Input from "../component/Input";
+import { loginSuccess } from "../redux/authActions";
 import { withApiProgress } from "../shared/ApiProgress";
-import { Authentication } from "../shared/AuthenticationContext";
+// import { Authentication } from "../shared/AuthenticationContext";
 
 class LoginPage extends React.Component {
-    static contextType = Authentication;
+    // static contextType = Authentication;
 
     state = {
         username: null,
@@ -32,7 +33,6 @@ class LoginPage extends React.Component {
     onClickLogin = async event => {
         event.preventDefault();
         const { username, password } = this.state;
-        const { onLoginSuccess } = this.context;
         const body = {
             username,
             password
@@ -48,7 +48,10 @@ class LoginPage extends React.Component {
                 password: password
             }
 
-            onLoginSuccess(authState);
+            // onLoginSuccess(authState);
+            
+            this.props.onLoginSuccess(authState);
+
         } catch (error) {
             if (error.response.data.header) {
                 this.setState({ loginError: error.response.data.header.responseMessage })
@@ -85,7 +88,11 @@ class LoginPage extends React.Component {
     }
 }
 
-
+const mapDispatchTopProps = (dispatch) => {
+    return {
+        onLoginSuccess: (authState) => dispatch(loginSuccess(authState))
+    }
+}
 const LoginPageTranslation = withTranslation()(LoginPage)
 const LoginPageWithApiProgress = withApiProgress(LoginPageTranslation, '/v1/auth')
-export default LoginPageWithApiProgress;
+export default connect(null, mapDispatchTopProps)(LoginPageWithApiProgress);
