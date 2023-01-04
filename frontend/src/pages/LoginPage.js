@@ -1,15 +1,13 @@
 import React from "react";
 import { withTranslation } from "react-i18next";
 import { connect } from "react-redux";
-import { login } from '../api/apiCall';
 import ButtonWithProgress from "../component/ButtonWithProgress";
 import Input from "../component/Input";
-import { loginSuccess } from "../redux/authActions";
+import { loginHandler } from "../redux/authActions";
 import { withApiProgress } from "../shared/ApiProgress";
-// import { Authentication } from "../shared/AuthenticationContext";
+
 
 class LoginPage extends React.Component {
-    // static contextType = Authentication;
 
     state = {
         username: null,
@@ -33,24 +31,18 @@ class LoginPage extends React.Component {
     onClickLogin = async event => {
         event.preventDefault();
         const { username, password } = this.state;
-        const body = {
+        const creds = {
             username,
             password
         }
-        const { push } = this.props.history;
+
+        const { history, dispatch } = this.props;
+        const { push } = history;
+
         this.setState({ loginError: undefined });
         try {
-            const response = await login(body);
+            await dispatch(loginHandler(creds));
             push('/');
-
-            const authState = {
-                ...response.data.detail,
-                password: password
-            }
-
-            // onLoginSuccess(authState);
-            
-            this.props.onLoginSuccess(authState);
 
         } catch (error) {
             if (error.response.data.header) {
@@ -88,11 +80,7 @@ class LoginPage extends React.Component {
     }
 }
 
-const mapDispatchTopProps = (dispatch) => {
-    return {
-        onLoginSuccess: (authState) => dispatch(loginSuccess(authState))
-    }
-}
+
 const LoginPageTranslation = withTranslation()(LoginPage)
 const LoginPageWithApiProgress = withApiProgress(LoginPageTranslation, '/v1/auth')
-export default connect(null, mapDispatchTopProps)(LoginPageWithApiProgress);
+export default connect()(LoginPageWithApiProgress);
