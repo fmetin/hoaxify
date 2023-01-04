@@ -1,5 +1,5 @@
 import * as ACTIONS from './Constant'
-import { login } from '../api/apiCall'
+import { login, signup } from '../api/apiCall'
 
 export const logoutSuccess = () => {
     return {
@@ -25,6 +25,14 @@ export const loginHandler = (credentials) => {
         }
     
         dispatch(loginSuccess(authState));
+        return response;
+    }
+}
+
+export const signUpHandler = (user) => {
+    return async function(dispatch) {
+        const response = await signup(user);
+        await dispatch(loginHandler(user));
         return response;
     }
 }
