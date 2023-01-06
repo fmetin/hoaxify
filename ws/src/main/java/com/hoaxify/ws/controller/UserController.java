@@ -1,23 +1,14 @@
 package com.hoaxify.ws.controller;
 
 import com.hoaxify.ws.dto.CreateUserRequestDto;
-import com.hoaxify.ws.rc.HoaxifyResponseCodes;
 import com.hoaxify.ws.service.UserService;
-import com.hoaxify.ws.shared.RestException;
 import com.hoaxify.ws.shared.RestResponse;
-import com.hoaxify.ws.shared.RestResponseHeader;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import static com.hoaxify.ws.rc.HoaxifyResponseCodes.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class UserController {

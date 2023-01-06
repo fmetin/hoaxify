@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { withTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import ButtonWithProgress from "../component/ButtonWithProgress";
@@ -7,77 +7,67 @@ import { loginHandler } from "../redux/authActions";
 import { withApiProgress } from "../shared/ApiProgress";
 
 
-class LoginPage extends React.Component {
-
-    state = {
-        username: null,
-        password: null,
-        errors: {},
-        loginError: null
-    }
+const LoginPage = (props) => {
 
 
-    onChange = event => {
-        const { name, value } = event.target;
-        const errors = { ...this.state.errors };
-        errors[name] = undefined;
-        this.setState({
-            [name]: value,
-            errors,
-            loginError: undefined
-        })
-    }
+    const [username, setUsername] = useState();
+    const [password, setPassword] = useState();
+    const [error, setError] = useState();
 
-    onClickLogin = async event => {
+    useEffect(
+        () => {
+            setError(undefined);
+        },
+        [username, password]
+    );
+
+    const onClickLogin = async event => {
         event.preventDefault();
-        const { username, password } = this.state;
+
         const creds = {
             username,
             password
         }
 
-        const { history, dispatch } = this.props;
+        const { history, dispatch } = props;
         const { push } = history;
 
-        this.setState({ loginError: undefined });
+        setError(undefined);
         try {
             await dispatch(loginHandler(creds));
             push('/');
 
         } catch (error) {
             if (error.response.data.header) {
-                this.setState({ loginError: error.response.data.header.responseMessage })
+                setError(error.response.data.header.responseMessage);
             }
         }
     }
 
 
 
-    render() {
-        const { errors, loginError, username, password } = this.state;
-        const { t, pendingApiCall } = this.props;
-        const buttonDisabled = !(username && password);
-        return (
-            <div className="container">
-                <form>
-                    <h1 className="text-center">{t('login')}</h1>
-                    <Input name="username" label={t('username')} error={errors.username} onChange={this.onChange} />
-                    <Input name="password" label={t('password')} error={errors.password} onChange={this.onChange} type="password" />
-                    {loginError && <div className="alert alert-danger">
-                        {loginError}
-                    </div>}
-                    <div className="text-center">
-                        <ButtonWithProgress
-                            onClick={this.onClickLogin}
-                            disabled={pendingApiCall || buttonDisabled}
-                            pendingApiCall={pendingApiCall}
-                            text={t('login')}
-                        />
-                    </div>
-                </form>
-            </div>
-        );
-    }
+    const { t, pendingApiCall } = props;
+    const buttonDisabled = !(username && password);
+    return (
+        <div className="container">
+            <form>
+                <h1 className="text-center">{t('login')}</h1>
+                <Input label={t('username')} onChange={(event) => { setUsername(event.target.value) }} />
+                <Input label={t('password')} type="password" onChange={event => { setPassword(event.target.value) }} />
+                {error && <div className="alert alert-danger">
+                    {error}
+                </div>}
+                <div className="text-center">
+                    <ButtonWithProgress
+                        onClick={onClickLogin}
+                        disabled={pendingApiCall || buttonDisabled}
+                        pendingApiCall={pendingApiCall}
+                        text={t('login')}
+                    />
+                </div>
+            </form>
+        </div>
+    );
 }
 
 
