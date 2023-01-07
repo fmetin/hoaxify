@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
-import logo from '../assets/hoaxify.png'
-import { Link } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import logo from '../assets/hoaxify.png';
 import { logoutSuccess } from '../redux/authActions';
-// import { Authentication } from '../shared/AuthenticationContext';
 
 class TopBar extends Component {
-    // static contextType = Authentication;
 
     render() {
         const { t, isLoggedIn, username, onLogoutSuccess } = this.props;
@@ -71,7 +69,7 @@ const mapStateToProps = (store) => {
 const mapDispatchToProps = dispatch => {
     return {
         onLogoutSuccess: () => dispatch(logoutSuccess())
-        
+
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(TopBarWithTranslation);
