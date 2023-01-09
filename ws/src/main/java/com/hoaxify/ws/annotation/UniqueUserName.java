@@ -6,7 +6,7 @@ import jakarta.validation.Payload;
 
 import java.lang.annotation.*;
 
-import static com.hoaxify.ws.rc.HoaxifyMessages.MSG_VALIDATION_CONSTRAINT_UNIQUEUSERNAME;
+import static com.hoaxify.ws.shared.HoaxifyMessages.MSG_VALIDATION_CONSTRAINT_UNIQUEUSERNAME;
 
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)

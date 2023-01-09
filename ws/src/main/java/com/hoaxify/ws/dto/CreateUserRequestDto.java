@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-import static com.hoaxify.ws.rc.HoaxifyMessages.*;
+import static com.hoaxify.ws.shared.HoaxifyMessages.*;
 
 @Data
 public class CreateUserRequestDto {

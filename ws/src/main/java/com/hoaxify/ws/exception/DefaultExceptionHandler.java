@@ -1,10 +1,9 @@
-package com.hoaxify.ws.error;
+package com.hoaxify.ws.exception;
 
 
 import com.hoaxify.ws.shared.RestResponse;
 import com.hoaxify.ws.shared.RestResponseHeader;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -16,8 +15,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.hoaxify.ws.rc.HoaxifyResponseCodes.BAD_CREDENTIAL;
-import static com.hoaxify.ws.rc.HoaxifyResponseCodes.VALIDATION_ERROR;
+import static com.hoaxify.ws.shared.HoaxifyResponseCodes.BAD_CREDENTIAL;
+import static com.hoaxify.ws.shared.HoaxifyResponseCodes.VALIDATION_ERROR;
 
 @ControllerAdvice
 public class DefaultExceptionHandler {

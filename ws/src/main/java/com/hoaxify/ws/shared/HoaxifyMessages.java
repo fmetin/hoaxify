@@ -1,4 +1,4 @@
-package com.hoaxify.ws.rc;
+package com.hoaxify.ws.shared;
 
 public class HoaxifyMessages {
     public final static String MSG_VALIDATION_ERROR = "{hoaxify.validation.error}";

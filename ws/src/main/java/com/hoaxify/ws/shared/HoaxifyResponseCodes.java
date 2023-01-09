@@ -1,8 +1,6 @@
-package com.hoaxify.ws.rc;
+package com.hoaxify.ws.shared;
 
-import com.hoaxify.ws.shared.RestException;
-
-import static com.hoaxify.ws.rc.HoaxifyMessages.*;
+import static com.hoaxify.ws.shared.HoaxifyMessages.*;
 
 public class HoaxifyResponseCodes {
     public static RestException VALIDATION_ERROR = new RestException("VLD-0001", MSG_VALIDATION_ERROR);
