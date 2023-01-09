@@ -4,4 +4,4 @@ ws/.idea/*
 frontend/node_modules/*
 ws/target/*
 *.iml
-frontend/.vscode/extensions.json
+frontend/.vscode/*
