@@ -1,41 +1,35 @@
 import React from "react";
+import { useSelector } from 'react-redux';
+import { HashRouter as Router, Redirect, Route, Switch } from "react-router-dom";
 import LanguageSelector from "../component/LanguageSelector";
-import LoginPage from "../pages/LoginPage";
-import UserSignupPage from "../pages/UserSignupPage";
-import HomePage from "../pages/HomePage";
-import UserPage from "../pages/UserPage";
-import { HashRouter as Router, Route, Redirect, Switch } from "react-router-dom";
 import TopBar from "../component/TopBar";
-import { connect } from 'react-redux';
+import HomePage from "../pages/HomePage";
+import LoginPage from "../pages/LoginPage";
+import UserPage from "../pages/UserPage";
+import UserSignupPage from "../pages/UserSignupPage";
 
-class App extends React.Component {
-  render() {
-    const {isLoggedIn} = this.props;
-    return (
-      <div>
-        <Router>
-          <TopBar />
-          <Switch>
-            <Route exact path="/" component={HomePage} />
-            {
-              !isLoggedIn && <Route path="/login" component={LoginPage} />}
-            <Route path="/signup" component={UserSignupPage} />
-            <Route path="/user/:username" component={UserPage} />
-            <Redirect to="/" />
-          </Switch>
-        </Router>
-        <LanguageSelector />
-      </div>
-    );
-  };
+const App = () => {
+  const { isLoggedIn } = useSelector(store => ({ isLoggedIn: store.isLoggedIn }))
+
+  return (
+    <div>
+      <Router>
+        <TopBar />
+        <Switch>
+          <Route exact path="/" component={HomePage} />
+          {
+            !isLoggedIn && <Route path="/login" component={LoginPage} />}
+          <Route path="/signup" component={UserSignupPage} />
+          <Route path="/user/:username" component={UserPage} />
+          <Redirect to="/" />
+        </Switch>
+      </Router>
+      <LanguageSelector />
+    </div>
+  );
 
 }
 
-const mapStateToProps = (store) => {
-  const {isLoggedIn } = store;
-  return {
-      isLoggedIn
-  }
-}
 
-export default connect(mapStateToProps)(App);
+
+export default App;

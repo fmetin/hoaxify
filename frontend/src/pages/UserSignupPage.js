@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { withTranslation } from "react-i18next";
-import { connect } from "react-redux";
+import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import ButtonWithProgress from "../component/ButtonWithProgress";
 import Input from "../component/Input";
 import { signUpHandler } from "../redux/authActions";
@@ -19,16 +19,19 @@ const UserSignupPage = (props) => {
 
     const [errors, setErrors] = useState({});
 
+    const dispatch = useDispatch();
+    const { t } = useTranslation();
+
     const onChange = (event) => {
         const { name, value } = event.target;
-        setErrors((previousErrors) => ({...previousErrors, [name]: undefined}));
-        setForm((previousForm) => ({...previousForm, [name]: value}));
+        setErrors((previousErrors) => ({ ...previousErrors, [name]: undefined }));
+        setForm((previousForm) => ({ ...previousForm, [name]: value }));
     }
 
 
     const onClickSignUp = async event => {
         event.preventDefault();
-        const { history, dispatch } = props;
+        const { history } = props;
         const { push } = history;
         const { username, displayName, password } = form;
         const body = {
@@ -48,9 +51,8 @@ const UserSignupPage = (props) => {
 
     }
 
-    const { t, pendingApiCall } = props;
-
-    const {username: usernameError, displayName: displayNameError, password: passwordError} = errors;
+    const { pendingApiCall } = props;
+    const { username: usernameError, displayName: displayNameError, password: passwordError } = errors;
 
     let passwordRepeatError;
     if (form.password !== form.passwordRepeat) {
@@ -78,7 +80,5 @@ const UserSignupPage = (props) => {
 }
 
 // high order component
-const UserSignupPageTranslation = withTranslation()(UserSignupPage);
-const UserSignupPageWithApiProgress = withApiProgress(UserSignupPageTranslation, '/v1/create-user');
-const UserSignupPageWithApiProgressLogin = withApiProgress(UserSignupPageWithApiProgress, '/v1/auth');
-export default connect()(UserSignupPageWithApiProgressLogin);
+const UserSignupPageWithApiProgress = withApiProgress(UserSignupPage, '/v1/create-user');
+export default withApiProgress(UserSignupPageWithApiProgress, '/v1/auth');
