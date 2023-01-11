@@ -5,11 +5,9 @@ import com.hoaxify.ws.service.UserService;
 import com.hoaxify.ws.shared.RestResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class UserController {
@@ -27,8 +25,8 @@ public class UserController {
     }
 
     @GetMapping("/v1/users")
-    public ResponseEntity<?> getUsers() {
-        return ResponseEntity.ok(new RestResponse<>(userService.getUsers()));
+    public ResponseEntity<?> getUsers(Pageable pageable) {
+        return ResponseEntity.ok(new RestResponse<>(userService.getUsers(pageable)));
     }
 
 
