@@ -6,6 +6,7 @@ import com.hoaxify.ws.shared.RestResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +24,11 @@ public class UserController {
     public ResponseEntity<?> createUser(@Valid @RequestBody CreateUserRequestDto request) {
         userService.createUser(request);
         return ResponseEntity.ok(new RestResponse<>());
+    }
+
+    @GetMapping("/v1/users")
+    public ResponseEntity<?> getUsers() {
+        return ResponseEntity.ok(new RestResponse<>(userService.getUsers()));
     }
 
 

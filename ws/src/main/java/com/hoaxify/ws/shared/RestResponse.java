@@ -24,4 +24,9 @@ public class RestResponse<T> {
     public RestResponse() {
         this.header = new RestResponseHeader();
     }
+
+    public RestResponse(T detail) {
+        this.header = new RestResponseHeader();
+        this.detail = detail;
+    }
 }

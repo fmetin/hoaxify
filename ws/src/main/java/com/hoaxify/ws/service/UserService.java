@@ -1,7 +1,10 @@
 package com.hoaxify.ws.service;
 
 import com.hoaxify.ws.dto.CreateUserRequestDto;
+import com.hoaxify.ws.dto.UserResponseDto;
 import com.hoaxify.ws.entity.User;
+
+import java.util.List;
 
 public interface UserService {
 
@@ -10,4 +13,6 @@ public interface UserService {
     long countByUsername(String username);
 
     User findByUsername(String username);
+
+    List<UserResponseDto> getUsers();
 }

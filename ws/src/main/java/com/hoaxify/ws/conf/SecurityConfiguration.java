@@ -12,6 +12,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.util.ArrayList;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
@@ -28,12 +30,12 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable();
+        http.headers().frameOptions().disable();
 //        http.cors().disable();
-
+        String [] authenticatedUrls = {"/v1/auth"};
         http.httpBasic().authenticationEntryPoint(delegatedAuthenticationEntryPoint).and().exceptionHandling();
-
         http.authorizeHttpRequests()
-                .requestMatchers(HttpMethod.POST, "/v1/auth").authenticated()
+                .requestMatchers(HttpMethod.POST, authenticatedUrls).authenticated()
                 .and()
                 .authorizeHttpRequests().anyRequest().permitAll();
 
@@ -46,10 +48,5 @@ public class SecurityConfiguration {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(authService);
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 }
