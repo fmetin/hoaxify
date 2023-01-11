@@ -1,7 +1,6 @@
 package com.hoaxify.ws.mapper;
 
 import com.hoaxify.ws.annotation.EncodedMapping;
-import com.hoaxify.ws.conf.PasswordEncoderMapper;
 import com.hoaxify.ws.dto.CreateUserRequestDto;
 import com.hoaxify.ws.dto.UserResponseDto;
 import com.hoaxify.ws.entity.User;

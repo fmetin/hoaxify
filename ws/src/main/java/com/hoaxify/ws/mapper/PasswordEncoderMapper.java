@@ -1,4 +1,4 @@
-package com.hoaxify.ws.conf;
+package com.hoaxify.ws.mapper;
 
 import com.hoaxify.ws.annotation.EncodedMapping;
 import lombok.AccessLevel;
