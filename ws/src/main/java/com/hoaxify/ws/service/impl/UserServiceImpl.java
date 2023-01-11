@@ -10,11 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Service
@@ -23,15 +19,12 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    private final PasswordEncoder passwordEncoder;
-
     private final UserMapper userMapper;
 
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, UserMapper userMapper) {
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
         this.userMapper = userMapper;
     }
 
@@ -53,7 +46,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Page<UserResponseDto> getUsers(Pageable pageable) {
-        Page<User> page = userRepository.findAll(pageable);
-        return page.map(userMapper::mapUserToUserResponseDto);
+        return userRepository.findAll(pageable).map(userMapper::mapUserToUserResponseDto);
     }
 }

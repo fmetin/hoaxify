@@ -1,33 +1,66 @@
 import React, { Component } from "react";
 import { withTranslation } from "react-i18next";
 import { getUsers } from "../api/apiCall";
+import UserListItem from "./UserListItem";
 
 class UserList extends Component {
   state = {
-    users: [],
+    page: {
+      content: [],
+      number: 0,
+      size: 3
+    },
   };
 
   componentDidMount() {
-    getUsers().then((response) => {
+    this.loadUsers();
+  }
+
+  onClickNext = () => {
+    const nextPage = this.state.page.number + 1;
+    this.loadUsers(nextPage);
+  }
+
+  onClickPrevious = () => {
+    const nextPage = this.state.page.number - 1;
+    this.loadUsers(nextPage);
+  }
+
+  loadUsers = page => {
+    getUsers(page).then((response) => {
       this.setState({
-        users: response.data.detail,
+        page: response.data.detail,
       });
     });
   }
   render() {
     const { t } = this.props;
-    const { users } = this.state;
+    const { content : users, first, last } = this.state.page;
     return (
       <div className="card">
         <h3 className="card-header text-center">{t('users')}</h3>
         <div className="list-group list-group-flush">
-          {users.map((user, index) => {
+          {users.map((user) => {
             return (
-              <div className="list-group-item list-group-item-action" key={user.username}>
-                {user.username}
-              </div>
+              <UserListItem key={user.username} user={user} />
             );
           })}
+        </div>
+        <div>
+        {first === false && 
+          <button
+          className="btn btn-sm btn-light"
+          onClick={this.onClickPrevious}
+          >
+            {t('previous')}
+            </button>}
+          {last === false && 
+          <button
+          className="btn btn-sm btn-light float-end"
+          onClick={this.onClickNext}
+          >
+            {t('next')}
+            </button>}
         </div>
       </div>
     );

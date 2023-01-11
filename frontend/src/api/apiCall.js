@@ -10,10 +10,10 @@ export const signup = (body) => {
 
 
 export const login = creds => {
-    return axios.post("/v1/auth", {}, {auth: creds} );
+    return axios.post("/v1/auth", {}, { auth: creds });
 }
 
 
-export const getUsers = () => {
-    return axios.get("/v1/users");
+export const getUsers = (page = 0, size = 3) => {
+    return axios.get(`/v1/users?page=${page}&size=${size}`);
 }

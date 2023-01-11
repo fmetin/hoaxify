@@ -1,6 +1,7 @@
 package com.hoaxify.ws.mapper;
 
 import com.hoaxify.ws.annotation.EncodedMapping;
+import com.hoaxify.ws.dto.AuthResponseDto;
 import com.hoaxify.ws.dto.CreateUserRequestDto;
 import com.hoaxify.ws.dto.UserResponseDto;
 import com.hoaxify.ws.entity.User;
@@ -13,4 +14,6 @@ public interface UserMapper {
     User mapUserToCreateUserRequestDto(CreateUserRequestDto requestDto);
 
     UserResponseDto mapUserToUserResponseDto(User user);
+
+    AuthResponseDto mapUserToAuthResponseDto(User user);
 }
