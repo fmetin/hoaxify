@@ -8,7 +8,7 @@ import com.hoaxify.ws.repository.UserRepository;
 import com.hoaxify.ws.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -52,9 +52,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserResponseDto> getUsers(Pageable pageable) {
-        List<UserResponseDto> responseDtoList = new ArrayList<>();
-        userRepository.findAll(pageable).getContent().forEach(user -> responseDtoList.add(userMapper.mapUserToUserResponseDto(user)));
-        return responseDtoList;
+    public Page<UserResponseDto> getUsers(Pageable pageable) {
+        Page<User> page = userRepository.findAll(pageable);
+        return page.map(userMapper::mapUserToUserResponseDto);
     }
 }
