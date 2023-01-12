@@ -45,7 +45,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<UserResponseDto> getUsers(Pageable pageable) {
+    public Page<UserResponseDto> getUsers(Pageable pageable, User user) {
+        if (user != null)
+            return userRepository.findByIdNot(user.getId(), pageable).map(userMapper::mapUserToUserResponseDto);
         return userRepository.findAll(pageable).map(userMapper::mapUserToUserResponseDto);
     }
 }

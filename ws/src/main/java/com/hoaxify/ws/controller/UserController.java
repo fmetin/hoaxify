@@ -1,5 +1,7 @@
 package com.hoaxify.ws.controller;
 
+import com.hoaxify.ws.annotation.CurrentUser;
+import com.hoaxify.ws.conf.HoaxifyUserDetails;
 import com.hoaxify.ws.dto.CreateUserRequestDto;
 import com.hoaxify.ws.service.UserService;
 import com.hoaxify.ws.shared.RestResponse;
@@ -25,8 +27,8 @@ public class UserController {
     }
 
     @GetMapping("/v1/users")
-    public ResponseEntity<?> getUsers(Pageable pageable) {
-        return ResponseEntity.ok(new RestResponse<>(userService.getUsers(pageable)));
+    public ResponseEntity<?> getUsers(Pageable pageable, @CurrentUser HoaxifyUserDetails hoaxifyUserDetails) {
+        return ResponseEntity.ok(new RestResponse<>(userService.getUsers(pageable, hoaxifyUserDetails != null ? hoaxifyUserDetails.getUser() : null)));
     }
 
 

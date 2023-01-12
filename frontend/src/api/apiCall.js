@@ -4,6 +4,15 @@ export const changeLanguage = language => {
     axios.defaults.headers['accept-language'] = language;
 }
 
+export const setAuthorizationHeader = ({ username, password, isLoggedIn }) => {
+    if (isLoggedIn) {
+        const auth = `Basic ${btoa(username + ':' + password)}`
+        axios.defaults.headers['Authorization'] = auth;
+    } else {
+        delete axios.defaults.headers['Authorization'];
+    }
+}
+
 export const signup = (body) => {
     return axios.post("/v1/create-user", body);
 }

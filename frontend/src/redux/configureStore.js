@@ -2,10 +2,13 @@ import { legacy_createStore as createStore, applyMiddleware, compose } from 'red
 import authReducer from './authReducer'
 import SecureLS from 'secure-ls';
 import thunk from 'redux-thunk';
+import { setAuthorizationHeader } from '../api/apiCall';
 
 const secureLS = new SecureLS();
 
 const configureStore = () => {
+    const initialState = getStateFromLocalStorage();
+    setAuthorizationHeader(initialState);
     const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
     const store = createStore(
         authReducer,
@@ -16,6 +19,7 @@ const configureStore = () => {
 
     store.subscribe(() => {
         updateStateInStorage(store.getState());
+        setAuthorizationHeader(store.getState());
     })
     return store;
 }
