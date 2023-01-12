@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getUsers } from "../api/apiCall";
+import { useApiProgress } from "../shared/ApiProgress";
 import UserListItem from "./UserListItem";
 
 const UserList = (props) => {
@@ -9,6 +10,10 @@ const UserList = (props) => {
     number: 0,
     size: 3
   });
+
+  const [loadFailure, setLoadFailure] = useState(false);
+
+  const pendingApiCall = useApiProgress('/v1/users?page');
 
   useEffect(() => {
     loadUsers();
@@ -24,10 +29,14 @@ const UserList = (props) => {
     changePage(nextPage);
   }
 
-  const loadUsers = page => {
-    getUsers(page).then((response) => {
+  const loadUsers = async page => {
+    setLoadFailure(false);
+    try {
+      const response = await getUsers(page);
       setPage(response.data.detail);
-    });
+    } catch (error) {
+      setLoadFailure(true);
+    }
   }
 
   const changePage = nextPage => {
@@ -37,6 +46,33 @@ const UserList = (props) => {
 
   const { t } = useTranslation();
   const { content: users, first, last } = page;
+  let actionDiv = (
+    <div>
+      {first === false &&
+        <button
+          className="btn btn-sm btn-light"
+          onClick={onClickPrevious}
+        >
+          {t('previous')}
+        </button>}
+      {last === false &&
+        <button
+          className="btn btn-sm btn-light float-end"
+          onClick={onClickNext}
+        >
+          {t('next')}
+        </button>}
+    </div>
+  );
+  if (pendingApiCall) {
+    actionDiv = (
+      <div className="d-flex justify-content-center">
+        <div className="spinner-border text-black-50">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="card">
       <h3 className="card-header text-center">{t('users')}</h3>
@@ -47,22 +83,8 @@ const UserList = (props) => {
           );
         })}
       </div>
-      <div>
-        {first === false &&
-          <button
-            className="btn btn-sm btn-light"
-            onClick={onClickPrevious}
-          >
-            {t('previous')}
-          </button>}
-        {last === false &&
-          <button
-            className="btn btn-sm btn-light float-end"
-            onClick={onClickNext}
-          >
-            {t('next')}
-          </button>}
-      </div>
+        {actionDiv}
+        {loadFailure && <div className="text-center text-danger">{t('load.failure')}</div>  }
     </div>
   );
 
