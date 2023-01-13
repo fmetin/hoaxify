@@ -6,7 +6,7 @@ const ProfileCard = (props) => {
 
     const { user } = props;
     const { username, displayName, image } = user;
-
+    
     const { username: loggedInUsername } = useSelector(store => ({ username: store.username }));
     const routeParams = useParams();
     const pathUserName = routeParams.username;

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getUsers } from "../api/apiCall";
 import { useApiProgress } from "../shared/ApiProgress";
+import Spinner from "./Spinner";
 import UserListItem from "./UserListItem";
 
 const UserList = (props) => {
@@ -66,11 +67,7 @@ const UserList = (props) => {
   );
   if (pendingApiCall) {
     actionDiv = (
-      <div className="d-flex justify-content-center">
-        <div className="spinner-border text-black-50">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
+      <Spinner />
     );
   }
   return (
@@ -83,8 +80,8 @@ const UserList = (props) => {
           );
         })}
       </div>
-        {actionDiv}
-        {loadFailure && <div className="text-center text-danger">{t('load.failure')}</div>  }
+      {actionDiv}
+      {loadFailure && <div className="text-center text-danger">{t('load.failure')}</div>}
     </div>
   );
 
