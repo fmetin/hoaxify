@@ -26,3 +26,7 @@ export const login = creds => {
 export const getUsers = (page = 0, size = 3) => {
     return axios.get(`/v1/users?page=${page}&size=${size}`);
 }
+
+export const getUser = (username) => {
+    return axios.get(`/v1/user/${username}`);
+}

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import logo from '../assets/hoaxify.png';
 import { logoutSuccess } from '../redux/authActions';
 
-const TopBar = props => {
+const TopBar = () => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const { isLoggedIn, username } = useSelector((store) => {

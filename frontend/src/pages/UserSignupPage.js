@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import ButtonWithProgress from "../component/ButtonWithProgress";
 import Input from "../component/Input";
 import { signUpHandler } from "../redux/authActions";
-import { useApiProgress, withApiProgress } from "../shared/ApiProgress";
+import { useApiProgress } from "../shared/ApiProgress";
 
 
 const UserSignupPage = (props) => {
