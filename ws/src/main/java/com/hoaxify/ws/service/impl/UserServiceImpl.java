@@ -6,11 +6,14 @@ import com.hoaxify.ws.entity.User;
 import com.hoaxify.ws.mapper.UserMapper;
 import com.hoaxify.ws.repository.UserRepository;
 import com.hoaxify.ws.service.UserService;
+import com.hoaxify.ws.shared.RestException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import static com.hoaxify.ws.error.HoaxifyResponseCode.USER_NOT_FOUND;
 
 
 @Service
@@ -49,5 +52,14 @@ public class UserServiceImpl implements UserService {
         if (user != null)
             return userRepository.findByIdNot(user.getId(), pageable).map(userMapper::mapUserToUserResponseDto);
         return userRepository.findAll(pageable).map(userMapper::mapUserToUserResponseDto);
+    }
+
+    @Override
+    public UserResponseDto getUser(String username) {
+        User user = userRepository.findByUsername(username);
+        if (user == null)
+            throw new RestException(USER_NOT_FOUND);
+
+        return userMapper.mapUserToUserResponseDto(user);
     }
 }

@@ -31,5 +31,8 @@ public class UserController {
         return ResponseEntity.ok(new RestResponse<>(userService.getUsers(pageable, hoaxifyUserDetails != null ? hoaxifyUserDetails.getUser() : null)));
     }
 
-
+    @GetMapping("/v1/user/{username}")
+    public ResponseEntity<?> getUser(@PathVariable String username) {
+        return ResponseEntity.ok(new RestResponse<>(userService.getUser(username)));
+    }
 }

@@ -15,4 +15,6 @@ public interface UserService {
     User findByUsername(String username);
 
     Page<UserResponseDto> getUsers(Pageable pageable, User user);
+
+    UserResponseDto getUser(String username);
 }

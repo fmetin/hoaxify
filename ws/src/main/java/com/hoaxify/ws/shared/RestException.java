@@ -7,8 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Slf4j
-public class RestException extends Exception {
+public class RestException extends RuntimeException {
     private String responseCode;
     private String responseMessage;
 
@@ -17,6 +16,12 @@ public class RestException extends Exception {
         super(responseMessage);
         this.responseCode = responseCode;
         this.responseMessage = responseMessage;
+    }
+
+    public RestException(RestResponseCode restResponseCode) {
+        super(restResponseCode.getResponseMessage());
+        this.responseCode = restResponseCode.getResponseCode();
+        this.responseMessage = restResponseCode.getResponseMessage();
     }
 
     public String getResponseMessage() {
