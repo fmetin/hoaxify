@@ -18,6 +18,10 @@ i18next.use(initReactI18next).init({
                 'previous': '< previous',
                 'load.failure': 'Load Failure',
                 'user.not.found': 'User not found',
+                'edit': 'Edit',
+                'cancel': 'Cancel',
+                'save': 'Save',
+                'change.display.name': 'Change Display Name',
             }
         },
         tr: {
@@ -35,6 +39,10 @@ i18next.use(initReactI18next).init({
                 'previous': '< önceki',
                 'load.failure': 'Liste alınamadı',
                 'user.not.found': 'Kullanıcı bulunamadı',
+                'edit': 'Düzenle',
+                'cancel': 'İptal',
+                'save': 'Kaydet',
+                'change.display.name': 'Görünür İsminizi Değiştirin',
             }
         }
     },

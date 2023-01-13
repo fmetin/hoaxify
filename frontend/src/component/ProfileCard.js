@@ -1,16 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import Input from './Input';
 import ProfileImageWithDefault from './ProfileImageWithDefault';
 const ProfileCard = (props) => {
 
+    const [inEditMode, setInEditMode] = useState(false);
+
     const { user } = props;
     const { username, displayName, image } = user;
-    
+    const { t } = useTranslation();
+
     const { username: loggedInUsername } = useSelector(store => ({ username: store.username }));
     const routeParams = useParams();
     const pathUserName = routeParams.username;
-    
+
     return (
         <div className="card text-center">
             <div className="card-header">
@@ -23,9 +28,38 @@ const ProfileCard = (props) => {
                 />
             </div>
             <div className="card-body">
-                <h3>
-                    {displayName}@{username}
-                </h3>
+                {!inEditMode && (
+                    <>
+                        <h3>
+                            {displayName}@{username}
+                        </h3>
+                        <button className="btn btn-success d-inline-flex"
+                            onClick={() => {
+                                setInEditMode(true)
+                            }}>
+                            <i className="material-icons">edit</i>
+                            {t('edit')}
+                        </button>
+                    </>
+                )}
+                {inEditMode &&
+                    <div>
+                        <Input label={t('change.display.name')} ></Input>
+                        <div>
+                            <button className="btn btn-primary d-inline-flex">
+                                <i className="material-icons">save</i>
+                                {t('save')}
+                            </button>
+                            <button className="btn btn-light d-inline-flex ms-1"
+                                onClick={() => {
+                                    setInEditMode(false);
+                                }}>
+                                <i className="material-icons">close</i>
+                                {t('cancel')}
+                            </button>
+                        </div>
+                    </div>
+                }
             </div>
         </div>
     );
