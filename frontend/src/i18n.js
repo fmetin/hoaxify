@@ -17,6 +17,7 @@ i18next.use(initReactI18next).init({
                 'next': 'next >',
                 'previous': '< previous',
                 'load.failure': 'Load Failure',
+                'user.not.found': 'User not found',
             }
         },
         tr: {
@@ -33,6 +34,7 @@ i18next.use(initReactI18next).init({
                 'next': 'sonraki >',
                 'previous': '< önceki',
                 'load.failure': 'Liste alınamadı',
+                'user.not.found': 'Kullanıcı bulunamadı',
             }
         }
     },
