@@ -30,3 +30,7 @@ export const getUsers = (page = 0, size = 3) => {
 export const getUser = (username) => {
     return axios.get(`/v1/user/${username}`);
 }
+
+export const updateUser = (body, username) => {
+    return axios.put(`/v1/user/${username}`, body);
+}

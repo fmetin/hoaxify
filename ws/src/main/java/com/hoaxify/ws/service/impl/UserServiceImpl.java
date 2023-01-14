@@ -65,7 +65,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(UpdateUserRequestDto request, String username) {
-        userRepository.updateDisplayNameByUsername(request.getDisplayName(), username);
+    public UserResponseDto updateUser(UpdateUserRequestDto request, String username) {
+        User user = userRepository.findByUsername(username);
+        if (user == null)
+            throw new RestException(USER_NOT_FOUND);
+        user.setDisplayName(request.getDisplayName());
+        userRepository.save(user);
+        return userMapper.mapUserToUserResponseDto(user);
     }
 }

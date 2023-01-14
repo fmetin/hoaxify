@@ -19,5 +19,5 @@ public interface UserService {
 
     UserResponseDto getUser(String username);
 
-    void updateUser(UpdateUserRequestDto request, String username);
+    UserResponseDto updateUser(UpdateUserRequestDto request, String username);
 }

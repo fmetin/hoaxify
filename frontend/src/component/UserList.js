@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getUsers } from "../api/apiCall";
+import { METHOD_GET } from "../redux/Constant";
 import { useApiProgress } from "../shared/ApiProgress";
 import Spinner from "./Spinner";
 import UserListItem from "./UserListItem";
@@ -14,7 +15,7 @@ const UserList = (props) => {
 
   const [loadFailure, setLoadFailure] = useState(false);
 
-  const pendingApiCall = useApiProgress('/v1/users?page');
+  const pendingApiCall = useApiProgress(METHOD_GET, '/v1/users?page');
 
   useEffect(() => {
     loadUsers();

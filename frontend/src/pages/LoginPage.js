@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import ButtonWithProgress from "../component/ButtonWithProgress";
 import Input from "../component/Input";
 import { loginHandler } from "../redux/authActions";
+import { METHOD_POST } from "../redux/Constant";
 import { useApiProgress } from "../shared/ApiProgress";
 
 
@@ -50,7 +51,7 @@ const LoginPage = (props) => {
 
 
 
-    const pendingApiCall = useApiProgress('/v1/auth');
+    const pendingApiCall = useApiProgress(METHOD_POST, '/v1/auth');
     const buttonDisabled = !(username && password);
     return (
         <div className="container">

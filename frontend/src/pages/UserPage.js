@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { getUser } from '../api/apiCall';
 import ProfileCard from '../component/ProfileCard';
 import Spinner from '../component/Spinner';
+import { METHOD_GET } from '../redux/Constant';
 import { callApi } from '../shared/ApiCallUtil';
 import { useApiProgress } from '../shared/ApiProgress';
 
@@ -16,7 +17,7 @@ const UserPage = () => {
 
     const { t } = useTranslation();
 
-    const pendingApiCall = useApiProgress('/v1/user/' + username)
+    const pendingApiCall = useApiProgress(METHOD_GET, '/v1/user/' + username)
 
     useEffect(() => {
         setNotFound(false);

@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import ButtonWithProgress from "../component/ButtonWithProgress";
 import Input from "../component/Input";
 import { signUpHandler } from "../redux/authActions";
+import { METHOD_POST } from "../redux/Constant";
 import { useApiProgress } from "../shared/ApiProgress";
 
 
@@ -51,10 +52,10 @@ const UserSignupPage = (props) => {
 
     }
 
-    const pendingApiCallSignUp = useApiProgress('/v1/create-user');
-    const pendingApiCallLogin = useApiProgress('/v1/auth');
+    const pendingApiCallSignUp = useApiProgress(METHOD_POST, '/v1/create-user');
+    const pendingApiCallLogin = useApiProgress(METHOD_POST, '/v1/auth');
     const pendingApiCall = pendingApiCallLogin || pendingApiCallSignUp;
-    
+
     const { username: usernameError, displayName: displayNameError, password: passwordError } = errors;
 
     let passwordRepeatError;
