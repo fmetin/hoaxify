@@ -1,6 +1,7 @@
 package com.hoaxify.ws.service.impl;
 
 import com.hoaxify.ws.dto.CreateUserRequestDto;
+import com.hoaxify.ws.dto.UpdateUserRequestDto;
 import com.hoaxify.ws.dto.UserResponseDto;
 import com.hoaxify.ws.entity.User;
 import com.hoaxify.ws.mapper.UserMapper;
@@ -61,5 +62,10 @@ public class UserServiceImpl implements UserService {
             throw new RestException(USER_NOT_FOUND);
 
         return userMapper.mapUserToUserResponseDto(user);
+    }
+
+    @Override
+    public void updateUser(UpdateUserRequestDto request, String username) {
+        userRepository.updateDisplayNameByUsername(request.getDisplayName(), username);
     }
 }

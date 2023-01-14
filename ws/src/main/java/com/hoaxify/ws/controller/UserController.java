@@ -3,6 +3,7 @@ package com.hoaxify.ws.controller;
 import com.hoaxify.ws.annotation.CurrentUser;
 import com.hoaxify.ws.conf.HoaxifyUserDetails;
 import com.hoaxify.ws.dto.CreateUserRequestDto;
+import com.hoaxify.ws.dto.UpdateUserRequestDto;
 import com.hoaxify.ws.service.UserService;
 import com.hoaxify.ws.shared.RestResponse;
 import jakarta.validation.Valid;
@@ -34,5 +35,11 @@ public class UserController {
     @GetMapping("/v1/user/{username}")
     public ResponseEntity<?> getUser(@PathVariable String username) {
         return ResponseEntity.ok(new RestResponse<>(userService.getUser(username)));
+    }
+
+    @PutMapping("/v1/user/{username}")
+    public ResponseEntity<?> updateUser(@RequestBody UpdateUserRequestDto request, @PathVariable String username) {
+        userService.updateUser(request, username);
+        return ResponseEntity.ok(new RestResponse<>());
     }
 }

@@ -1,6 +1,7 @@
 package com.hoaxify.ws.service;
 
 import com.hoaxify.ws.dto.CreateUserRequestDto;
+import com.hoaxify.ws.dto.UpdateUserRequestDto;
 import com.hoaxify.ws.dto.UserResponseDto;
 import com.hoaxify.ws.entity.User;
 import org.springframework.data.domain.Page;
@@ -17,4 +18,6 @@ public interface UserService {
     Page<UserResponseDto> getUsers(Pageable pageable, User user);
 
     UserResponseDto getUser(String username);
+
+    void updateUser(UpdateUserRequestDto request, String username);
 }
