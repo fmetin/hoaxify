@@ -25,6 +25,8 @@ const ProfileCard = (props) => {
     const routeParams = useParams();
     const pathUserName = routeParams.username;
 
+    const editable = pathUserName === loggedInUsername;
+
     useEffect(() => {
         if (inEditMode) {
             setUpdatedDisplayName(displayName);
@@ -65,13 +67,13 @@ const ProfileCard = (props) => {
                         <h3>
                             {displayName}@{username}
                         </h3>
-                        <button className="btn btn-success d-inline-flex"
+                        {editable && <button className="btn btn-success d-inline-flex"
                             onClick={() => {
                                 setInEditMode(true)
                             }}>
                             <i className="material-icons">edit</i>
                             {t('edit')}
-                        </button>
+                        </button>}
                     </>
                 )}
                 {inEditMode &&

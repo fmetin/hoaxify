@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration {
 
     private final UserAuthService authService;
@@ -32,10 +35,12 @@ public class SecurityConfiguration {
         http.csrf().disable();
         http.headers().frameOptions().disable();
 //        http.cors().disable();
-        String [] authenticatedUrls = {"/v1/auth"};
+        String [] authenticatedUrlsForPost = {"/v1/auth"};
+        String [] authenticatedUrlsForPut = {"/v1/user/**"};
         http.httpBasic().authenticationEntryPoint(delegatedAuthenticationEntryPoint).and().exceptionHandling();
         http.authorizeHttpRequests()
-                .requestMatchers(HttpMethod.POST, authenticatedUrls).authenticated()
+                .requestMatchers(HttpMethod.POST, authenticatedUrlsForPost).authenticated()
+                .requestMatchers(HttpMethod.PUT, authenticatedUrlsForPut).authenticated()
                 .and()
                 .authorizeHttpRequests().anyRequest().permitAll();
 

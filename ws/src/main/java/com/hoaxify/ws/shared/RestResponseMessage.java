@@ -1,6 +1,7 @@
 package com.hoaxify.ws.shared;
 
 public class RestResponseMessage {
+    public final static String MSG_FORBIDDEN_ERROR = "{hoaxify.forbidden.error}";
     public final static String MSG_VALIDATION_ERROR = "{hoaxify.validation.error}";
     public final static String MSG_BAD_CREDENTIAL = "{hoaxify.bad.credential}";
     public final static String MSG_VALIDATION_CONSTRAINT_USERNAME_NOTNULL = "{hoaxify.validation.constraint.username.NotNull.message}";
