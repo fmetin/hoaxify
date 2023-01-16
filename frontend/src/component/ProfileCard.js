@@ -68,11 +68,12 @@ const ProfileCard = (props) => {
         <div className="card text-center">
             <div className="card-header">
                 <ProfileImageWithDefault
-                    image={newImage || image}
+                    image={image}
                     alt={`${username} profile`}
                     className="rounded-circle shadow"
                     width="200"
                     height="200"
+                    tempimage={newImage}
                 />
             </div>
             <div className="card-body">
