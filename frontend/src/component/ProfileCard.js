@@ -14,6 +14,8 @@ const ProfileCard = (props) => {
     const [inEditMode, setInEditMode] = useState(false);
     const [updatedDisplayName, setUpdatedDisplayName] = useState();
     const [editable, setEditable] = useState(false);
+    const [newImage, setNewImage] = useState();
+
     const { username: loggedInUsername } = useSelector(store => ({ username: store.username }));
     const routeParams = useParams();
     const pathUserName = routeParams.username;
@@ -34,6 +36,7 @@ const ProfileCard = (props) => {
             setUpdatedDisplayName(displayName);
         } else {
             setUpdatedDisplayName(undefined);
+            setNewImage(undefined);
         }
     }, [inEditMode, displayName])
 
@@ -50,6 +53,14 @@ const ProfileCard = (props) => {
         }
     }
 
+    const onChangeFile = (event) => {
+        const file = event.target.files[0];
+        const fileReader = new FileReader();
+        fileReader.onloadend = () => {
+            setNewImage(fileReader.result);
+        }
+        fileReader.readAsDataURL(file);
+    }
     const pendingApiCall = useApiProgress(METHOD_PUT, '/v1/user/' + username);
 
     return (
@@ -61,6 +72,7 @@ const ProfileCard = (props) => {
                     className="rounded-circle shadow"
                     width="200"
                     height="200"
+                    tempImage={newImage}
                 />
             </div>
             <div className="card-body">
@@ -80,7 +92,15 @@ const ProfileCard = (props) => {
                 )}
                 {inEditMode &&
                     <div>
-                        <Input label={t('change.display.name')} defaultValue={displayName} onChange={(event) => { setUpdatedDisplayName(event.target.value) }} ></Input>
+                        <Input
+                            label={t('change.display.name')}
+                            defaultValue={displayName}
+                            onChange={
+                                (event) => {
+                                    setUpdatedDisplayName(event.target.value)
+                                }}
+                        />
+                        <input type="file" onChange={onChangeFile} />
                         <div>
                             <ButtonWithProgress
                                 className="btn btn-primary d-inline-flex"
