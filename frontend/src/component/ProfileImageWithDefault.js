@@ -2,7 +2,7 @@ import React from 'react';
 import defaultPicture from '../assets/profile.png'
 const ProfileImageWithDefault = (props) => {
     
-    const {image, tempImage } = props;
+    const {image, tempimage } = props;
 
     let imageSrc = defaultPicture;
     if (image) {
@@ -11,7 +11,7 @@ const ProfileImageWithDefault = (props) => {
     return (
         <img
             alt={`Profile`}
-            src={tempImage || imageSrc}
+            src={tempimage || imageSrc}
             {...props}
         />
     );

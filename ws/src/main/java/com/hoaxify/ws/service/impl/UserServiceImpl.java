@@ -59,8 +59,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDto getUser(String username) {
         User user = userRepository.findByUsername(username);
-        if (user == null)
-            throw new RestException(USER_NOT_FOUND);
+        checkUserExist(user);
 
         return userMapper.mapUserToUserResponseDto(user);
     }
@@ -68,10 +67,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDto updateUser(UpdateUserRequestDto request, String username) {
         User user = userRepository.findByUsername(username);
-        if (user == null)
-            throw new RestException(USER_NOT_FOUND);
-        user.setDisplayName(request.getDisplayName());
+        checkUserExist(user);
+        setUserNewValues(request, user);
         userRepository.save(user);
         return userMapper.mapUserToUserResponseDto(user);
+    }
+
+    private static void setUserNewValues(UpdateUserRequestDto request, User user) {
+        user.setDisplayName(request.getDisplayName());
+        if (request.getImage() != null && !request.getImage().isEmpty())
+            user.setImage(request.getImage());
+    }
+
+    private static void checkUserExist(User user) {
+        if (user == null)
+            throw new RestException(USER_NOT_FOUND);
     }
 }

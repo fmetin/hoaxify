@@ -42,7 +42,8 @@ const ProfileCard = (props) => {
 
     const onClickSave = async () => {
         const body = {
-            displayName: updatedDisplayName
+            displayName: updatedDisplayName,
+            image: newImage
         };
         try {
             const response = await callApi(updateUser, body, username);
@@ -72,7 +73,7 @@ const ProfileCard = (props) => {
                     className="rounded-circle shadow"
                     width="200"
                     height="200"
-                    tempImage={newImage}
+                    tempimage={newImage}
                 />
             </div>
             <div className="card-body">

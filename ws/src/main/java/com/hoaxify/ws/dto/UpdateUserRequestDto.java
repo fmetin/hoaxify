@@ -13,4 +13,5 @@ public class UpdateUserRequestDto {
     @NotNull(message = MSG_VALIDATION_CONSTRAINT_DISPLAYNAME_NOTNULL)
     @NotEmpty(message = MSG_VALIDATION_CONSTRAINT_DISPLAYNAME_NOTEMPTY)
     private String displayName;
+    private String image;
 }
