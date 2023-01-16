@@ -23,8 +23,6 @@ public class User {
     @NotNull(message = MSG_VALIDATION_CONSTRAINT_PASSWORD_NOTNULL)
     @Pattern(regexp="^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$", message = MSG_VALIDATION_CONSTRAINT_PASSWORD_PATTERN)
     private String password;
-
-    @Lob
     private String image;
 
 }

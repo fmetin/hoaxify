@@ -43,7 +43,7 @@ const ProfileCard = (props) => {
     const onClickSave = async () => {
         const body = {
             displayName: updatedDisplayName,
-            image: newImage
+            image: newImage.split(',')[1]
         };
         try {
             const response = await callApi(updateUser, body, username);

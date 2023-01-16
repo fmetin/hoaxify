@@ -8,11 +8,11 @@ import com.hoaxify.ws.mapper.UserMapper;
 import com.hoaxify.ws.repository.UserRepository;
 import com.hoaxify.ws.service.UserService;
 import com.hoaxify.ws.shared.RestException;
+import com.hoaxify.ws.util.FileService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import static com.hoaxify.ws.error.HoaxifyResponseCode.USER_NOT_FOUND;
@@ -26,11 +26,14 @@ public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
 
+    private final FileService fileService;
+
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, FileService fileService) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.fileService = fileService;
     }
 
     @Override
@@ -73,13 +76,17 @@ public class UserServiceImpl implements UserService {
         return userMapper.mapUserToUserResponseDto(user);
     }
 
-    private static void setUserNewValues(UpdateUserRequestDto request, User user) {
+    private void setUserNewValues(UpdateUserRequestDto request, User user) {
         user.setDisplayName(request.getDisplayName());
-        if (request.getImage() != null && !request.getImage().isEmpty())
-            user.setImage(request.getImage());
+        if (request.getImage() != null && !request.getImage().isEmpty()) {
+//            user.setImage(request.getImage());
+            String storedFileName = fileService.writeBase64EncodedStringToFile(request.getImage());
+            user.setImage(storedFileName);
+        }
+
     }
 
-    private static void checkUserExist(User user) {
+    private void checkUserExist(User user) {
         if (user == null)
             throw new RestException(USER_NOT_FOUND);
     }
