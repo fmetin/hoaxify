@@ -41,9 +41,13 @@ const ProfileCard = (props) => {
     }, [inEditMode, displayName])
 
     const onClickSave = async () => {
+        let image;
+        if (newImage) {
+            image = newImage.split(',')[1]
+        }
         const body = {
             displayName: updatedDisplayName,
-            image: newImage.split(',')[1]
+            image
         };
         try {
             const response = await callApi(updateUser, body, username);
@@ -55,12 +59,17 @@ const ProfileCard = (props) => {
     }
 
     const onChangeFile = (event) => {
+        if (event.target.files.length < 1) {
+            return;
+        }
+        
         const file = event.target.files[0];
         const fileReader = new FileReader();
         fileReader.onloadend = () => {
             setNewImage(fileReader.result);
         }
         fileReader.readAsDataURL(file);
+
     }
     const pendingApiCall = useApiProgress(METHOD_PUT, '/v1/user/' + username);
 
