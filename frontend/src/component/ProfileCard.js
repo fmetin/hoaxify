@@ -13,19 +13,21 @@ const ProfileCard = (props) => {
     const [user, setUser] = useState({});
     const [inEditMode, setInEditMode] = useState(false);
     const [updatedDisplayName, setUpdatedDisplayName] = useState();
+    const [editable, setEditable] = useState(false);
+    const { username: loggedInUsername } = useSelector(store => ({ username: store.username }));
+    const routeParams = useParams();
+    const pathUserName = routeParams.username;
+    const { username, displayName, image } = user;
+    const { t } = useTranslation();
+
 
     useEffect(() => {
         setUser(props.user);
     }, [props.user]);
 
-    const { username, displayName, image } = user;
-    const { t } = useTranslation();
-
-    const { username: loggedInUsername } = useSelector(store => ({ username: store.username }));
-    const routeParams = useParams();
-    const pathUserName = routeParams.username;
-
-    const editable = pathUserName === loggedInUsername;
+    useEffect(() => {
+        setEditable(pathUserName === loggedInUsername)
+    }, [pathUserName, loggedInUsername])
 
     useEffect(() => {
         if (inEditMode) {
