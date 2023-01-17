@@ -1,5 +1,6 @@
 package com.hoaxify.ws.dto;
 
+import com.hoaxify.ws.annotation.ProfileImage;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -14,5 +15,6 @@ public class UpdateUserRequestDto {
     @NotEmpty(message = MSG_VALIDATION_CONSTRAINT_DISPLAYNAME_NOTEMPTY)
     @Size(min = 4, max = 255, message = MSG_VALIDATION_CONSTRAINT_DISPLAYNAME_SIZE)
     private String displayName;
+    @ProfileImage
     private String image;
 }
