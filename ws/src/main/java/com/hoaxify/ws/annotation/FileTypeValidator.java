@@ -3,12 +3,8 @@ package com.hoaxify.ws.annotation;
 import com.hoaxify.ws.util.FileService;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import org.hibernate.validator.constraintvalidation.HibernateConstraintValidator;
 import org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
 public class FileTypeValidator implements ConstraintValidator<FileType, String> {
 
