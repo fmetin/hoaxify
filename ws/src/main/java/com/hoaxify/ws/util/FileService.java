@@ -1,6 +1,7 @@
 package com.hoaxify.ws.util;
 
 import com.hoaxify.ws.conf.AppConfiguration;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -9,10 +10,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class FileService {
 
     @Autowired
@@ -35,5 +39,15 @@ public class FileService {
 
     public String generateRandomName() {
         return UUID.randomUUID().toString().replaceAll("-", "");
+    }
+
+    public void deleteFile(String oldImage) {
+        if (oldImage == null)
+            return;
+        try {
+            Files.deleteIfExists(Paths.get(appConfiguration.getUploadPath(), oldImage));
+        } catch (IOException e) {
+            log.error(e.toString());
+        }
     }
 }

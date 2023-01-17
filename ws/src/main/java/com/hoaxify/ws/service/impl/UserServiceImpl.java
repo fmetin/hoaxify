@@ -79,7 +79,8 @@ public class UserServiceImpl implements UserService {
     private void setUserNewValues(UpdateUserRequestDto request, User user) {
         user.setDisplayName(request.getDisplayName());
         if (request.getImage() != null && !request.getImage().isEmpty()) {
-//            user.setImage(request.getImage());
+            String oldImage = user.getImage();
+            fileService.deleteFile(oldImage);
             String storedFileName = fileService.writeBase64EncodedStringToFile(request.getImage());
             user.setImage(storedFileName);
         }
