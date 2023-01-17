@@ -45,7 +45,7 @@ public class UserController {
 
     @PutMapping("/v1/user/{username}")
     @PreAuthorize("#username == principal.username")
-    public ResponseEntity<?> updateUser(@RequestBody UpdateUserRequestDto request,
+    public ResponseEntity<?> updateUser(@Valid @RequestBody UpdateUserRequestDto request,
                                         @PathVariable String username) {
         return ResponseEntity.ok(new RestResponse<>(userService.updateUser(request, username)));
     }

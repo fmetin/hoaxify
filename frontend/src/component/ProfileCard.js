@@ -15,6 +15,7 @@ const ProfileCard = (props) => {
     const [updatedDisplayName, setUpdatedDisplayName] = useState();
     const [editable, setEditable] = useState(false);
     const [newImage, setNewImage] = useState();
+    const [validationErrors, setValidationErrors] = useState({});
 
     const { username: loggedInUsername } = useSelector(store => ({ username: store.username }));
     const routeParams = useParams();
@@ -30,6 +31,13 @@ const ProfileCard = (props) => {
     useEffect(() => {
         setEditable(pathUserName === loggedInUsername)
     }, [pathUserName, loggedInUsername])
+
+    useEffect(() => {
+        setValidationErrors(previousValidationErrors => ({
+            ...previousValidationErrors,
+            displayName: undefined
+        }));
+    }, [updatedDisplayName])
 
     useEffect(() => {
         if (inEditMode) {
@@ -54,7 +62,7 @@ const ProfileCard = (props) => {
             setUser(response.data.detail);
             setInEditMode(false);
         } catch (error) {
-
+            setValidationErrors(error.response.data.validationErrors);
         }
     }
 
@@ -62,7 +70,7 @@ const ProfileCard = (props) => {
         if (event.target.files.length < 1) {
             return;
         }
-        
+
         const file = event.target.files[0];
         const fileReader = new FileReader();
         fileReader.onloadend = () => {
@@ -72,7 +80,7 @@ const ProfileCard = (props) => {
 
     }
     const pendingApiCall = useApiProgress(METHOD_PUT, '/v1/user/' + username);
-
+    const { displayName: displayNameError } = validationErrors;
     return (
         <div className="card text-center">
             <div className="card-header">
@@ -109,6 +117,7 @@ const ProfileCard = (props) => {
                                 (event) => {
                                     setUpdatedDisplayName(event.target.value)
                                 }}
+                            error={displayNameError}
                         />
                         <input type="file" onChange={onChangeFile} />
                         <div>
