@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -19,6 +19,24 @@ const TopBar = () => {
         }
     });
 
+    const menuArea = useRef(null);
+
+    const [menuVisible, setMenuVisible] = useState(false);
+
+    useEffect(() => {
+        document.addEventListener('click', menuClickTracker);
+        return () => {
+            document.removeEventListener('click', menuClickTracker);
+        }
+    }, [isLoggedIn]);
+
+    const menuClickTracker = (event) => {
+        if (menuArea.current === null ||
+            !menuArea.current.contains(event.target)) {
+            setMenuVisible(false);
+        }
+    }
+
     const onLogoutSuccess = () => {
         dispatch(logoutSuccess());
     }
@@ -38,10 +56,14 @@ const TopBar = () => {
     );
 
     if (isLoggedIn) {
+        let dropDownClass = "dropdown-menu p-0 shadow";
+        if (menuVisible) {
+            dropDownClass = "dropdown-menu show p-0 shadow";
+        }
         links = (
-            <ul className="navbar-nav ms-auto">
+            <ul className="navbar-nav ms-auto" ref={menuArea}>
                 <li className="nav-item dropdown">
-                    <div className="d-flex" style={{ cursor: 'pointer' }}>
+                    <div className="d-flex" style={{ cursor: 'pointer' }} onClick={() => setMenuVisible(true)}>
                         <ProfileImageWithDefault
                             image={image}
                             width="32"
@@ -50,8 +72,8 @@ const TopBar = () => {
                         />
                         <span className="nav-link dropdown-toggle">{displayName}</span>
                     </div>
-                    <div className="dropdown-menu show p-0 shadow">
-                        <Link className="dropdown-item d-flex p-2" to={`/user/${username}`}>
+                    <div className={dropDownClass}>
+                        <Link className="dropdown-item d-flex p-2" to={`/user/${username}`} onClick={() => setMenuVisible(false)}>
                             <i className="material-icons text-info me-2">person</i>
                             {t('my.profile')}
                         </Link>
