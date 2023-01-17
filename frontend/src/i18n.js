@@ -22,6 +22,7 @@ i18next.use(initReactI18next).init({
                 'cancel': 'Cancel',
                 'save': 'Save',
                 'change.display.name': 'Change Display Name',
+                'my.profile': 'My Profile',
             }
         },
         tr: {
@@ -43,6 +44,7 @@ i18next.use(initReactI18next).init({
                 'cancel': 'İptal',
                 'save': 'Kaydet',
                 'change.display.name': 'Görünür İsminizi Değiştirin',
+                'my.profile': 'Hesabım',
             }
         }
     },
