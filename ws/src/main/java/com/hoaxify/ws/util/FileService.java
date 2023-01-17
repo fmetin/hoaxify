@@ -1,11 +1,9 @@
 package com.hoaxify.ws.util;
 
 import com.hoaxify.ws.conf.AppConfiguration;
-import com.hoaxify.ws.shared.RestException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -17,8 +15,6 @@ import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.UUID;
 
-import static com.hoaxify.ws.shared.RestResponseCode.VALIDATION_ERROR;
-
 @Service
 @Slf4j
 public class FileService {
@@ -27,9 +23,6 @@ public class FileService {
     private final AppConfiguration appConfiguration;
     private final Tika tika;
 
-    @Value("${hoaxify.validImageTypes:image/png, image/jpg}")
-    private String validImageTypes;
-
     @Autowired
     public FileService(AppConfiguration appConfiguration, Tika tika) {
         this.appConfiguration = appConfiguration;
@@ -37,9 +30,6 @@ public class FileService {
     }
 
     public String writeBase64EncodedStringToFile(String image) {
-        if (!isValidImage(image))
-            throw new RestException(VALIDATION_ERROR);
-
         String fileName = generateRandomName();
         File target = new File(appConfiguration.getUploadPath() + "/" + fileName);
         try {
@@ -68,11 +58,16 @@ public class FileService {
         }
     }
 
-    public boolean isValidImage(String image) {
-        if (image == null || image.isEmpty())
+    public boolean isValidFileType(String file, String[] validFileTypes) {
+        if (file == null || file.isEmpty())
             return true;
-        String fileType = tika.detect(Base64.getDecoder().decode(image));
+        String fileType = tika.detect(Base64.getDecoder().decode(file));
         log.info("File type {}", fileType);
-        return validImageTypes.contains(fileType);
+        for (String validFileType :
+                validFileTypes) {
+            if (fileType.contains(validFileType))
+                return true;
+        }
+        return false;
     }
 }

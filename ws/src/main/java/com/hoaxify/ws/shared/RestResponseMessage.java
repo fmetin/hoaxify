@@ -12,6 +12,6 @@ public class RestResponseMessage {
     public final static String MSG_VALIDATION_CONSTRAINT_PASSWORD_NOTNULL = "{hoaxify.validation.constraint.password.NotNull.message}";
     public final static String MSG_VALIDATION_CONSTRAINT_PASSWORD_PATTERN = "{hoaxify.validation.constraint.password.Pattern.message}";
     public final static String MSG_VALIDATION_CONSTRAINT_UNIQUEUSERNAME = "{hoaxify.validation.constraint.UniqueUserName.message}";
-    public final static String MSG_VALIDATION_CONSTRAINT_PROFILE_IMAGE = "{hoaxify.validation.constraint.ProfileImage.message}";
+    public final static String MSG_VALIDATION_CONSTRAINT_PROFILE_IMAGE = "{hoaxify.validation.constraint.FileType.message}";
 
 }
