@@ -23,7 +23,8 @@ const HoaxSubmit = () => {
         }
 
         try {
-            await callApi(postHoax, body)
+            await callApi(postHoax, body);
+            setFocused(false);
         } catch (error) {
             
         }
