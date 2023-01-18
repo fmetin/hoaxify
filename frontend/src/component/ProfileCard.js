@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { updateUser } from '../api/apiCall';
+import { updateSuccess } from '../redux/authActions';
 import { METHOD_PUT } from '../redux/Constant';
 import { callApi } from '../shared/ApiCallUtil';
 import { useApiProgress } from '../shared/ApiProgress';
@@ -16,6 +17,7 @@ const ProfileCard = (props) => {
     const [editable, setEditable] = useState(false);
     const [newImage, setNewImage] = useState();
     const [validationErrors, setValidationErrors] = useState({});
+    const dispatch = useDispatch();
 
     const { username: loggedInUsername } = useSelector(store => ({ username: store.username }));
     const routeParams = useParams();
@@ -68,6 +70,7 @@ const ProfileCard = (props) => {
             const response = await callApi(updateUser, body, username);
             setUser(response.data.detail);
             setInEditMode(false);
+            dispatch(updateSuccess(response.data.detail));
         } catch (error) {
             setValidationErrors(error.response.data.validationErrors);
         }
