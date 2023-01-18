@@ -23,6 +23,7 @@ i18next.use(initReactI18next).init({
                 'save': 'Save',
                 'change.display.name': 'Change Display Name',
                 'my.profile': 'My Profile',
+                'hoaxify': 'Hoaxify',
             }
         },
         tr: {
@@ -45,6 +46,7 @@ i18next.use(initReactI18next).init({
                 'save': 'Kaydet',
                 'change.display.name': 'Görünür İsminizi Değiştirin',
                 'my.profile': 'Hesabım',
+                'hoaxify': 'Hoaxify',
             }
         }
     },

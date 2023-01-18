@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { postHoax } from '../api/apiCall';
+import { METHOD_POST } from '../redux/Constant';
 import { callApi } from '../shared/ApiCallUtil';
+import { useApiProgress } from '../shared/ApiProgress';
+import ButtonWithProgress from './ButtonWithProgress';
 import ProfileImageWithDefault from './ProfileImageWithDefault';
 
 const HoaxSubmit = () => {
@@ -11,6 +14,8 @@ const HoaxSubmit = () => {
     const [hoax, setHoax] = useState('');
     const [errors, setErrors] = useState({})
     const { t } = useTranslation();
+
+    const pendingApiCall = useApiProgress(METHOD_POST, '/v1/hoax');
 
     useEffect(() => {
         if (!focused) {
@@ -61,16 +66,22 @@ const HoaxSubmit = () => {
                 <div className="invalid-feedback">
                     {errors.content}
                 </div>
-                {focused && <div className="text-end mt-1">
-                    <button
+                {focused && <div className="text-end mt-2">
+                    <ButtonWithProgress
                         className="btn btn-primary"
                         onClick={onClickHoaxify}
+                        disabled={pendingApiCall}
+                        pendingApiCall={pendingApiCall}
+                        text={
+                            <>
+                                {t('hoaxify')}
+                            </>
+                        }
                     >
-                        Hoaxify
-                    </button>
+                    </ButtonWithProgress>
                     <button
                         className="btn btn-light d-inline-flex ms-1"
-                        // disabled={pendingApiCall}
+                        disabled={pendingApiCall}
                         onClick={() => {
                             setFocused(false);
                         }}
