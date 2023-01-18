@@ -39,7 +39,7 @@ export const postHoax = (body) => {
     return axios.post(`/v1/hoaxes`, body);
 }
 
-export const getHoaxes = () => {
-    return axios.get(`/v1/hoaxes`);
+export const getHoaxes = (page = 0) => {
+    return axios.get(`/v1/hoaxes?page=` + page);
 }
 
