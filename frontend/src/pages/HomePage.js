@@ -1,10 +1,21 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+import HoaxSubmit from '../component/HoaxSubmit';
 import UserList from '../component/UserList';
 
 const HomePage = () => {
+    const {isLoggedIn} = useSelector((store) => ({isLoggedIn: store.isLoggedIn}))
     return (
         <div className="container">
-            <UserList/>
+            <div className="row">
+                <div className="col">
+                    {isLoggedIn && <HoaxSubmit/>}
+                </div>
+                <div className="col">
+                    <UserList />
+                </div>
+            </div>
+
         </div>
     );
 };
