@@ -1,6 +1,6 @@
 import { SUCCESS_CODE } from "../redux/Constant";
 
-export const callApi = async (apiCallFunction, body, pathVariable) => {
+export const callApi = async (apiCallFunction, body, pathVariable = undefined) => {
     const response = await apiCallFunction(body, pathVariable);
     if (response.data.header.responseCode !== SUCCESS_CODE) {
         createError(response);
