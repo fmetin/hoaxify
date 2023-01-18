@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import HoaxFeed from '../component/HoaxFeed';
 import HoaxSubmit from '../component/HoaxSubmit';
 import UserList from '../component/UserList';
 
@@ -9,7 +10,12 @@ const HomePage = () => {
         <div className="container">
             <div className="row">
                 <div className="col">
-                    {isLoggedIn && <HoaxSubmit/>}
+                    {isLoggedIn &&
+                     <div className="mb-1"> 
+                         <HoaxSubmit/>
+                     </div>
+                     }
+                    <HoaxFeed/>
                 </div>
                 <div className="col">
                     <UserList />

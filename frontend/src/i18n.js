@@ -24,6 +24,7 @@ i18next.use(initReactI18next).init({
                 'change.display.name': 'Change Display Name',
                 'my.profile': 'My Profile',
                 'hoaxify': 'Hoaxify',
+                'There are no hoaxes': 'There are no hoaxes',
             }
         },
         tr: {
@@ -47,6 +48,7 @@ i18next.use(initReactI18next).init({
                 'change.display.name': 'Görünür İsminizi Değiştirin',
                 'my.profile': 'Hesabım',
                 'hoaxify': 'Hoaxify',
+                'There are no hoaxes': 'Hoax bulunamadı',
             }
         }
     },

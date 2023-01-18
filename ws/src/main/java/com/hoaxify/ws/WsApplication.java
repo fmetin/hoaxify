@@ -1,6 +1,9 @@
 package com.hoaxify.ws;
 
 import com.hoaxify.ws.dto.CreateUserRequestDto;
+import com.hoaxify.ws.dto.HoaxRequestDto;
+import com.hoaxify.ws.entity.Hoax;
+import com.hoaxify.ws.service.HoaxService;
 import com.hoaxify.ws.service.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -17,7 +20,7 @@ public class WsApplication {
 
     @Bean
     @Profile("dev")
-    CommandLineRunner createInitialUsers(UserService userService) {
+    CommandLineRunner createInitialUsers(UserService userService, HoaxService hoaxService) {
         return args -> {
             for (int i = 1; i < 25; i++) {
                 CreateUserRequestDto requestDto = new CreateUserRequestDto();
@@ -25,6 +28,12 @@ public class WsApplication {
                 requestDto.setDisplayName("display" + i);
                 requestDto.setPassword("P4ssword");
                 userService.createUser(requestDto);
+            }
+
+            for (int i = 1; i <= 50; i++) {
+                HoaxRequestDto hoax = new HoaxRequestDto();
+                hoax.setContent("hoax" + i);
+                hoaxService.save(hoax);
             }
 
         };

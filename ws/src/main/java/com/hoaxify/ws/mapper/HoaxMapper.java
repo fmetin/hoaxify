@@ -1,6 +1,7 @@
 package com.hoaxify.ws.mapper;
 
 import com.hoaxify.ws.dto.HoaxRequestDto;
+import com.hoaxify.ws.dto.HoaxResponseDto;
 import com.hoaxify.ws.entity.Hoax;
 import com.hoaxify.ws.util.LocalDateTimeUtil;
 import org.mapstruct.Mapper;
@@ -15,4 +16,6 @@ public abstract class HoaxMapper {
 
     @Mapping(target = "createdDate", expression = "java(localDateTimeUtil.now())")
     public abstract Hoax mapPostHoaxRequestDtoToHoax(HoaxRequestDto requestDto);
+
+    public abstract HoaxResponseDto mapHoaxToHoaxResponseDto(Hoax hoax);
 }
