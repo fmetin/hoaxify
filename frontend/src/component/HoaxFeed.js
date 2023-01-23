@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { getHoaxes, getOldHoaxes, getUserHoaxes } from '../api/apiCall';
+import { getHoaxes, getOldHoaxes, getUserHoaxes, getUserOldHoaxes } from '../api/apiCall';
 import { METHOD_GET } from '../redux/Constant';
 import { callApi } from '../shared/ApiCallUtil';
 import HoaxView from './HoaxView';
@@ -27,7 +27,7 @@ const HoaxFeed = () => {
                     content: [...previousHoaxPage.content, ...response.data.detail.content]
                 }));
             } catch (error) {
-    
+
             }
         }
         loadHoaxes();
@@ -37,7 +37,10 @@ const HoaxFeed = () => {
     const loadOldHoaxes = async () => {
         const lastHoaxIndex = hoaxPage.content.length - 1;
         const lastHoaxId = hoaxPage.content[lastHoaxIndex].id;
-        const response = await callApi(getOldHoaxes, lastHoaxId);
+        const response =
+            username !== undefined ?
+                await callApi(getUserOldHoaxes, username, lastHoaxId) :
+                await callApi(getOldHoaxes, lastHoaxId);
         setHoaxPage(previousHoaxPage => ({
             ...response.data.detail,
             content: [...previousHoaxPage.content, ...response.data.detail.content]

@@ -52,4 +52,10 @@ public class HoaxServiceImpl implements HoaxService {
     public Page<HoaxResponseDto> getOldHoaxes(long id, Pageable pageable) {
         return hoaxRepository.findByIdLessThan(id, pageable).map(hoaxMapper::mapHoaxToHoaxResponseDto);
     }
+
+    @Override
+    public Page<HoaxResponseDto> oldHoaxesOfUser(String username, long id, Pageable pageable) {
+        userService.getUser(username);
+        return hoaxRepository.findByIdLessThanAndUser_Username(id, username, pageable).map(hoaxMapper::mapHoaxToHoaxResponseDto);
+    }
 }

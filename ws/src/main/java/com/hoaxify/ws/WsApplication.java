@@ -28,7 +28,7 @@ public class WsApplication {
                 requestDto.setDisplayName("display" + i);
                 requestDto.setPassword("P4ssword");
                 User user = userService.createUser(requestDto);
-                for (int j = 1; j <= 2; j++) {
+                for (int j = 1; j <= 20; j++) {
                     HoaxRequestDto hoax = new HoaxRequestDto();
                     hoax.setContent("hoax " + "(" + j + ")" + " from user " + "(" + i + ")");
                     hoaxService.save(hoax, user);

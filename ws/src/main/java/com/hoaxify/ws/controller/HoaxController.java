@@ -48,4 +48,12 @@ public class HoaxController {
             @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         return ResponseEntity.ok(new RestResponse<>(hoaxService.userHoaxes(username, pageable)));
     }
+
+    @GetMapping("/v1/hoaxes/user/{username}/{id}")
+    public ResponseEntity<?> oldHoaxesOfUser(
+            @PathVariable String username,
+            @PathVariable long id,
+            @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        return ResponseEntity.ok(new RestResponse<>(hoaxService.oldHoaxesOfUser(username, id, pageable)));
+    }
 }
