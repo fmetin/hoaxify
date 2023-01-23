@@ -11,4 +11,5 @@ public interface HoaxService {
     void save(HoaxRequestDto requestDto, User user);
 
     Page<HoaxResponseDto> getHoaxes(Pageable pageable);
+    Page<HoaxResponseDto> userHoaxes(String username, Pageable pageable);
 }
