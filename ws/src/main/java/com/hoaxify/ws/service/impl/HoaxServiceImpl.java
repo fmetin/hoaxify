@@ -14,6 +14,7 @@ import com.hoaxify.ws.shared.RestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -54,32 +55,51 @@ public class HoaxServiceImpl implements HoaxService {
 
     @Override
     public Page<HoaxResponseDto> getOldHoaxes(long id, Pageable pageable) {
-        return hoaxRepository.findByIdLessThan(id, pageable).map(hoaxMapper::mapHoaxToHoaxResponseDto);
+        Specification<Hoax> spec = idLessThan(id);
+        return hoaxRepository.findAll(spec, pageable).map(hoaxMapper::mapHoaxToHoaxResponseDto);
     }
 
     @Override
     public Page<HoaxResponseDto> oldHoaxesOfUser(String username, long id, Pageable pageable) {
         userService.getUser(username);
-        return hoaxRepository.findByIdLessThanAndUser_Username(id, username, pageable).map(hoaxMapper::mapHoaxToHoaxResponseDto);
+        Specification<Hoax> spec = idLessThan(id).and(userIs(username));
+        return hoaxRepository.findAll(spec, pageable).map(hoaxMapper::mapHoaxToHoaxResponseDto);
     }
 
     @Override
     public HoaxCountResponseDto getHoaxesCount(long id) {
-        return HoaxCountResponseDto.builder().count(hoaxRepository.countByIdGreaterThan(id)).build();
+        Specification<Hoax> spec = idGreaterThan(id);
+        return HoaxCountResponseDto.builder().count(hoaxRepository.count(spec)).build();
     }
 
     @Override
     public HoaxCountResponseDto getHoaxesCountOfUser(long id, String username) {
-        return HoaxCountResponseDto.builder().count(hoaxRepository.countByIdGreaterThanAndUser_Username(id, username)).build();
+        Specification<Hoax> spec = idGreaterThan(id).and(userIs(username));
+        return HoaxCountResponseDto.builder().count(hoaxRepository.count(spec)).build();
     }
 
     @Override
     public List<HoaxResponseDto> getNewHoaxes(long id, Pageable pageable) {
-        return hoaxRepository.findByIdGreaterThan(id, pageable.getSort()).stream().map(hoaxMapper::mapHoaxToHoaxResponseDto).collect(Collectors.toList());
+        Specification<Hoax> spec = idGreaterThan(id);
+        return hoaxRepository.findAll(spec, pageable).stream().map(hoaxMapper::mapHoaxToHoaxResponseDto).collect(Collectors.toList());
     }
 
     @Override
     public List<HoaxResponseDto> newHoaxesOfUser(String username, long id, Pageable pageable) {
-        return hoaxRepository.findByIdGreaterThanAndUser_Username(id, username, pageable.getSort()).stream().map(hoaxMapper::mapHoaxToHoaxResponseDto).collect(Collectors.toList());
+        Specification<Hoax> spec = idGreaterThan(id).and(userIs(username));
+        return hoaxRepository.findAll(spec, pageable.getSort()).stream().map(hoaxMapper::mapHoaxToHoaxResponseDto).collect(Collectors.toList());
     }
+
+    Specification<Hoax> idGreaterThan(long id) {
+        return (root, query, criteriaBuilder) -> criteriaBuilder.greaterThan(root.get("id"), id);
+    }
+
+    Specification<Hoax> idLessThan(long id) {
+        return (root, query, criteriaBuilder) -> criteriaBuilder.lessThan(root.get("id"), id);
+    }
+
+    Specification<Hoax> userIs(String username) {
+        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("user").get("username"), username);
+    }
+
 }
