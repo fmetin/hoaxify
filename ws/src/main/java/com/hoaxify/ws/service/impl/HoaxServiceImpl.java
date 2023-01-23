@@ -64,4 +64,9 @@ public class HoaxServiceImpl implements HoaxService {
     public HoaxCountResponseDto getHoaxesCount(long id) {
         return HoaxCountResponseDto.builder().count(hoaxRepository.countByIdGreaterThan(id)).build();
     }
+
+    @Override
+    public HoaxCountResponseDto getHoaxesCountOfUser(long id, String username) {
+        return HoaxCountResponseDto.builder().count(hoaxRepository.countByIdGreaterThanAndUser_Username(id, username)).build();
+    }
 }

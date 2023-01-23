@@ -61,4 +61,9 @@ public class HoaxController {
             @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         return ResponseEntity.ok(new RestResponse<>(hoaxService.oldHoaxesOfUser(username, id, pageable)));
     }
+
+    @GetMapping("/v1/hoaxes/count/{id}/{username}")
+    public ResponseEntity<?> getHoaxesCountOfUser(@PathVariable long id, @PathVariable String username) {
+        return ResponseEntity.ok(new RestResponse<>(hoaxService.getHoaxesCountOfUser(id, username)));
+    }
 }

@@ -19,4 +19,6 @@ public interface HoaxService {
     Page<HoaxResponseDto> oldHoaxesOfUser(String username, long id, Pageable pageable);
 
     HoaxCountResponseDto getHoaxesCount(long id);
+
+    HoaxCountResponseDto getHoaxesCountOfUser(long id, String username);
 }
