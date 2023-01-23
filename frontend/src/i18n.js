@@ -28,6 +28,7 @@ i18next.use(initReactI18next).init({
                 'hoaxify': 'Hoaxify',
                 'There are no hoaxes': 'There are no hoaxes',
                 'Load old hoaxes': 'Load old hoaxes',
+                'There are new hoaxes': 'There are new hoaxes',
             }
         },
         tr: {
@@ -53,6 +54,7 @@ i18next.use(initReactI18next).init({
                 'hoaxify': 'Hoaxify',
                 'There are no hoaxes': 'Hoax bulunamadı',
                 'Load old hoaxes': 'Geçmiş Hoaxları getir',
+                'There are new hoaxes': 'Yeni hoaxlar var',
             }
         }
     },

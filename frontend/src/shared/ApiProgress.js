@@ -1,13 +1,19 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-export const useApiProgress = (apiMethod, apiPath, strictPath = false) => {
+export const useApiProgress = (apiMethod, apiPath, strictPath = false, unusedApiPaths = []) => {
     const [pendingApiCall, setPendingApiCall] = useState(false);
 
     useEffect(() => {
         let requestInterceptor, responseInterceptor;
 
         const updateApicall = (method, url, inProgress) => {
+            for (let index = 0; index < unusedApiPaths.length; index++) {
+                const element = unusedApiPaths[index];
+                if (url.startsWith(element)) {
+                    return;
+                }   
+            }
             if (method !== apiMethod) {
                 return;
             }

@@ -42,6 +42,11 @@ public class HoaxController {
         return ResponseEntity.ok(new RestResponse<>(hoaxService.getOldHoaxes(id, pageable)));
     }
 
+    @GetMapping("/v1/hoaxes/count/{id}")
+    public ResponseEntity<?> getHoaxesCount(@PathVariable long id) {
+        return ResponseEntity.ok(new RestResponse<>(hoaxService.getHoaxesCount(id)));
+    }
+
     @GetMapping("/v1/hoaxes/user/{username}")
     public ResponseEntity<?> userHoaxes(
             @PathVariable String username,

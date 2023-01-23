@@ -55,4 +55,8 @@ export const getUserOldHoaxes = (username, id) => {
     return axios.get(`/v1/hoaxes/user/${username}/${id}`);
 }
 
+export const getHoaxesCount = (id) => {
+    return axios.get(`/v1/hoaxes/count/${id}`);
+}
+
 

@@ -1,5 +1,6 @@
 package com.hoaxify.ws.service;
 
+import com.hoaxify.ws.dto.HoaxCountResponseDto;
 import com.hoaxify.ws.dto.HoaxRequestDto;
 import com.hoaxify.ws.dto.HoaxResponseDto;
 import com.hoaxify.ws.entity.User;
@@ -16,4 +17,6 @@ public interface HoaxService {
     Page<HoaxResponseDto> getOldHoaxes(long id, Pageable pageable);
 
     Page<HoaxResponseDto> oldHoaxesOfUser(String username, long id, Pageable pageable);
+
+    HoaxCountResponseDto getHoaxesCount(long id);
 }

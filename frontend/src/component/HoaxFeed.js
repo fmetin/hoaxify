@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { getHoaxes, getOldHoaxes, getUserHoaxes, getUserOldHoaxes } from '../api/apiCall';
+import { getHoaxes, getHoaxesCount, getOldHoaxes, getUserHoaxes, getUserOldHoaxes } from '../api/apiCall';
 import { METHOD_GET } from '../redux/Constant';
 import { callApi } from '../shared/ApiCallUtil';
 import HoaxView from './HoaxView';
@@ -10,10 +10,26 @@ import { useParams } from 'react-router-dom';
 
 const HoaxFeed = () => {
     const [hoaxPage, setHoaxPage] = useState({ content: [], last: true, number: 0 });
+    const [newHoaxCount, setNewHoaxCount] = useState(0);
     const { t } = useTranslation();
     const { username } = useParams();
 
-    const pendingApiCall = useApiProgress(METHOD_GET, '/v1/hoaxes');
+    const pendingApiCall = useApiProgress(METHOD_GET, '/v1/hoaxes', false, ["/v1/hoaxes/count/"]);
+    const firstHoaxId = hoaxPage.content.length > 0 ?
+            hoaxPage.content[0].id : 0;
+
+    useEffect(() => {
+        const getCount = async () => {
+            const response = await callApi(getHoaxesCount, firstHoaxId);
+            setNewHoaxCount(response.data.detail.count);
+        }
+        let looper = setInterval(() => {
+            getCount();
+        }, 1000)
+        return function cleanUp() {
+            clearInterval(looper);
+        }
+    }, [firstHoaxId])
 
     useEffect(() => {
         const loadHoaxes = async (page) => {
@@ -56,6 +72,11 @@ const HoaxFeed = () => {
     }
     return (
         <div>
+            {newHoaxCount > 0 && (
+                <div className="alert alert-secondary text-center mb-1">
+                {t('There are new hoaxes')}
+            </div>
+            )}
             {content.map(hoax => {
                 return (
                     <HoaxView key={hoax.id} hoax={hoax} />

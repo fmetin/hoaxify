@@ -1,5 +1,6 @@
 package com.hoaxify.ws.service.impl;
 
+import com.hoaxify.ws.dto.HoaxCountResponseDto;
 import com.hoaxify.ws.dto.HoaxRequestDto;
 import com.hoaxify.ws.dto.HoaxResponseDto;
 import com.hoaxify.ws.entity.Hoax;
@@ -57,5 +58,10 @@ public class HoaxServiceImpl implements HoaxService {
     public Page<HoaxResponseDto> oldHoaxesOfUser(String username, long id, Pageable pageable) {
         userService.getUser(username);
         return hoaxRepository.findByIdLessThanAndUser_Username(id, username, pageable).map(hoaxMapper::mapHoaxToHoaxResponseDto);
+    }
+
+    @Override
+    public HoaxCountResponseDto getHoaxesCount(long id) {
+        return HoaxCountResponseDto.builder().count(hoaxRepository.countByIdGreaterThan(id)).build();
     }
 }
