@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { getHoaxes } from '../api/apiCall';
+import { getHoaxes, getUserHoaxes } from '../api/apiCall';
 import { METHOD_GET } from '../redux/Constant';
 import { callApi } from '../shared/ApiCallUtil';
 import HoaxView from './HoaxView';
 import { useApiProgress } from '../shared/ApiProgress';
 import Spinner from '../component/Spinner'
+import { useParams } from 'react-router-dom';
 
 const HoaxFeed = () => {
     const [hoaxPage, setHoaxPage] = useState({ content: [], last: true, number: 0 });
     const { t } = useTranslation();
+    const { username } = useParams();
 
     const pendingApiCall = useApiProgress(METHOD_GET, '/v1/hoaxes');
 
@@ -19,7 +21,10 @@ const HoaxFeed = () => {
 
     const loadHoaxes = async (page) => {
         try {
-            const response = await callApi(getHoaxes, page);
+            const response =
+                username !== undefined ?
+                    await callApi(getUserHoaxes, page, username) :
+                    await callApi(getHoaxes, page);
             setHoaxPage(previousHoaxPage => ({
                 ...response.data.detail,
                 content: [...previousHoaxPage.content, ...response.data.detail.content]

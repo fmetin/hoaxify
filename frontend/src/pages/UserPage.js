@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { getUser } from '../api/apiCall';
+import HoaxFeed from '../component/HoaxFeed';
 import ProfileCard from '../component/ProfileCard';
 import Spinner from '../component/Spinner';
 import { METHOD_GET } from '../redux/Constant';
@@ -35,12 +36,6 @@ const UserPage = () => {
         loadUser();
     }, [username]);
 
-    if (pendingApiCall) {
-        return (
-            <Spinner />
-        );
-    }
-
     if (notFound) {
         return (
             <div className="container">
@@ -55,9 +50,24 @@ const UserPage = () => {
             </div>
         )
     }
+
+    if (pendingApiCall || user.username !== username ) {
+        return (
+            <Spinner />
+        );
+    }
+
     return (
         <div className="container">
-            <ProfileCard user={user} />
+            <div className="row">
+                <div className="col">
+                    <ProfileCard user={user} />
+                </div>
+                <div className="col">
+                    <HoaxFeed/>
+                </div>
+
+            </div>
         </div>
     );
 };
