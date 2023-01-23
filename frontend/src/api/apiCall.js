@@ -43,8 +43,12 @@ export const getHoaxes = (page = 0) => {
     return axios.get(`/v1/hoaxes?page=` + page);
 }
 
+export const getOldHoaxes = (id) => {
+    return axios.get(`/v1/hoaxes/${id}`);
+}
+
 export const getUserHoaxes = (page = 0, username) => {
-    return axios.get(`/v1/hoaxes/${username}?page=` + page);
+    return axios.get(`/v1/hoaxes/user/${username}?page=` + page);
 }
 
 

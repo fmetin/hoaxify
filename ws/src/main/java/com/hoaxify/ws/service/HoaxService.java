@@ -12,4 +12,6 @@ public interface HoaxService {
 
     Page<HoaxResponseDto> getHoaxes(Pageable pageable);
     Page<HoaxResponseDto> userHoaxes(String username, Pageable pageable);
+
+    Page<HoaxResponseDto> getOldHoaxes(long id, Pageable pageable);
 }

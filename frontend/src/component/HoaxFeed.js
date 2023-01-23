@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { getHoaxes, getUserHoaxes } from '../api/apiCall';
+import { getHoaxes, getOldHoaxes, getUserHoaxes } from '../api/apiCall';
 import { METHOD_GET } from '../redux/Constant';
 import { callApi } from '../shared/ApiCallUtil';
 import HoaxView from './HoaxView';
@@ -16,22 +16,32 @@ const HoaxFeed = () => {
     const pendingApiCall = useApiProgress(METHOD_GET, '/v1/hoaxes');
 
     useEffect(() => {
-        loadHoaxes();
-    }, []);
-
-    const loadHoaxes = async (page) => {
-        try {
-            const response =
-                username !== undefined ?
-                    await callApi(getUserHoaxes, page, username) :
-                    await callApi(getHoaxes, page);
-            setHoaxPage(previousHoaxPage => ({
-                ...response.data.detail,
-                content: [...previousHoaxPage.content, ...response.data.detail.content]
-            }));
-        } catch (error) {
-
+        const loadHoaxes = async (page) => {
+            try {
+                const response =
+                    username !== undefined ?
+                        await callApi(getUserHoaxes, page, username) :
+                        await callApi(getHoaxes, page);
+                setHoaxPage(previousHoaxPage => ({
+                    ...response.data.detail,
+                    content: [...previousHoaxPage.content, ...response.data.detail.content]
+                }));
+            } catch (error) {
+    
+            }
         }
+        loadHoaxes();
+    }, [username]);
+
+
+    const loadOldHoaxes = async () => {
+        const lastHoaxIndex = hoaxPage.content.length - 1;
+        const lastHoaxId = hoaxPage.content[lastHoaxIndex].id;
+        const response = await callApi(getOldHoaxes, lastHoaxId);
+        setHoaxPage(previousHoaxPage => ({
+            ...response.data.detail,
+            content: [...previousHoaxPage.content, ...response.data.detail.content]
+        }));
     }
 
     const { content, last, number } = hoaxPage;
@@ -54,7 +64,7 @@ const HoaxFeed = () => {
                     style={{ cursor: pendingApiCall ? "not-allowed" : "pointer" }}
                     onClick={() => {
                         if (!pendingApiCall) {
-                            loadHoaxes(number + 1);
+                            loadOldHoaxes();
                         }
                     }}
                 >
