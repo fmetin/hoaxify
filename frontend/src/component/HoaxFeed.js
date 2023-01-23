@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { getHoaxes, getHoaxesCount, getHoaxesCountOfUser, getOldHoaxes, getUserHoaxes, getUserOldHoaxes } from '../api/apiCall';
+import { getHoaxes, getHoaxesCount, getHoaxesCountOfUser, getNewHoaxes, getOldHoaxes, getUserHoaxes, getUserNewHoaxes, getUserOldHoaxes } from '../api/apiCall';
 import { METHOD_GET } from '../redux/Constant';
 import { callApi } from '../shared/ApiCallUtil';
 import HoaxView from './HoaxView';
@@ -17,6 +17,8 @@ const HoaxFeed = () => {
     const pendingApiCall = useApiProgress(METHOD_GET, '/v1/hoaxes', false, ["/v1/hoaxes/count/"]);
     const firstHoaxId = hoaxPage.content.length > 0 ?
         hoaxPage.content[0].id : 0;
+    const lastHoaxId = hoaxPage.content.length > 0 ?
+        hoaxPage.content[hoaxPage.content.length - 1].id : 0;
 
     useEffect(() => {
         const getCount = async () => {
@@ -25,9 +27,7 @@ const HoaxFeed = () => {
                 await callApi(getHoaxesCount, firstHoaxId);
             setNewHoaxCount(response.data.detail.count);
         }
-        let looper = setInterval(() => {
-            getCount();
-        }, 1000)
+        let looper = setInterval(getCount, 1000)
         return function cleanUp() {
             clearInterval(looper);
         }
@@ -53,8 +53,6 @@ const HoaxFeed = () => {
 
 
     const loadOldHoaxes = async () => {
-        const lastHoaxIndex = hoaxPage.content.length - 1;
-        const lastHoaxId = hoaxPage.content[lastHoaxIndex].id;
         const response =
             username !== undefined ?
                 await callApi(getUserOldHoaxes, username, lastHoaxId) :
@@ -62,6 +60,18 @@ const HoaxFeed = () => {
         setHoaxPage(previousHoaxPage => ({
             ...response.data.detail,
             content: [...previousHoaxPage.content, ...response.data.detail.content]
+        }));
+    }
+
+    const loadNewHoaxes = async () => {
+        const response =
+            username !== undefined ?
+                await callApi(getUserNewHoaxes, username, firstHoaxId) :
+                await callApi(getNewHoaxes, firstHoaxId);
+        setNewHoaxCount(0);
+        setHoaxPage(previousHoaxPage => ({
+            ...previousHoaxPage,
+            content: [...response.data.detail, ...previousHoaxPage.content]
         }));
     }
 
@@ -75,8 +85,13 @@ const HoaxFeed = () => {
     return (
         <div>
             {newHoaxCount > 0 && (
-                <div className="alert alert-secondary text-center mb-1">
-                    {t('There are new hoaxes')}
+                <div
+                    className="alert alert-secondary text-center mb-1"
+                    style={{ cursor: pendingApiCall ? "not-allowed" : "pointer" }}
+                    onClick={pendingApiCall ? () => { } : loadNewHoaxes}
+                >
+                    {pendingApiCall ? <Spinner /> : t('There are new hoaxes')}
+
                 </div>
             )}
             {content.map(hoax => {
@@ -88,11 +103,7 @@ const HoaxFeed = () => {
                 <div
                     className="alert alert-secondary text-center"
                     style={{ cursor: pendingApiCall ? "not-allowed" : "pointer" }}
-                    onClick={() => {
-                        if (!pendingApiCall) {
-                            loadOldHoaxes();
-                        }
-                    }}
+                    onClick={pendingApiCall ? () => { } : loadOldHoaxes}
                 >
                     {pendingApiCall ? <Spinner /> : t('Load old hoaxes')}
                 </div>}

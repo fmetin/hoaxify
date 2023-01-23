@@ -44,7 +44,11 @@ export const getHoaxes = (page = 0) => {
 }
 
 export const getOldHoaxes = (id) => {
-    return axios.get(`/v1/hoaxes/${id}`);
+    return axios.get(`/v1/hoaxes/old/${id}`);
+}
+
+export const getNewHoaxes = (id) => {
+    return axios.get(`/v1/hoaxes/new/${id}`);
 }
 
 export const getUserHoaxes = (page = 0, username) => {
@@ -52,7 +56,11 @@ export const getUserHoaxes = (page = 0, username) => {
 }
 
 export const getUserOldHoaxes = (username, id) => {
-    return axios.get(`/v1/hoaxes/user/${username}/${id}`);
+    return axios.get(`/v1/hoaxes/user/old/${username}/${id}`);
+}
+
+export const getUserNewHoaxes = (username, id) => {
+    return axios.get(`/v1/hoaxes/user/new/${username}/${id}`);
 }
 
 export const getHoaxesCount = (id) => {

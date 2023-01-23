@@ -17,6 +17,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class HoaxServiceImpl implements HoaxService {
     private final HoaxRepository hoaxRepository;
@@ -68,5 +71,15 @@ public class HoaxServiceImpl implements HoaxService {
     @Override
     public HoaxCountResponseDto getHoaxesCountOfUser(long id, String username) {
         return HoaxCountResponseDto.builder().count(hoaxRepository.countByIdGreaterThanAndUser_Username(id, username)).build();
+    }
+
+    @Override
+    public List<HoaxResponseDto> getNewHoaxes(long id, Pageable pageable) {
+        return hoaxRepository.findByIdGreaterThan(id, pageable.getSort()).stream().map(hoaxMapper::mapHoaxToHoaxResponseDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<HoaxResponseDto> newHoaxesOfUser(String username, long id, Pageable pageable) {
+        return hoaxRepository.findByIdGreaterThanAndUser_Username(id, username, pageable.getSort()).stream().map(hoaxMapper::mapHoaxToHoaxResponseDto).collect(Collectors.toList());
     }
 }

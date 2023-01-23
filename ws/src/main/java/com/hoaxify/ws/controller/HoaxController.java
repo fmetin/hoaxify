@@ -35,11 +35,18 @@ public class HoaxController {
         return ResponseEntity.ok(new RestResponse<>(hoaxService.getHoaxes(pageable)));
     }
 
-    @GetMapping("/v1/hoaxes/{id}")
-    public ResponseEntity<?> getHoaxesRelative(
+    @GetMapping("/v1/hoaxes/old/{id}")
+    public ResponseEntity<?> getOldHoaxes(
             @PathVariable long id,
             @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         return ResponseEntity.ok(new RestResponse<>(hoaxService.getOldHoaxes(id, pageable)));
+    }
+
+    @GetMapping("/v1/hoaxes/new/{id}")
+    public ResponseEntity<?> getNewHoaxes(
+            @PathVariable long id,
+            @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        return ResponseEntity.ok(new RestResponse<>(hoaxService.getNewHoaxes(id, pageable)));
     }
 
     @GetMapping("/v1/hoaxes/count/{id}")
@@ -54,12 +61,20 @@ public class HoaxController {
         return ResponseEntity.ok(new RestResponse<>(hoaxService.userHoaxes(username, pageable)));
     }
 
-    @GetMapping("/v1/hoaxes/user/{username}/{id}")
+    @GetMapping("/v1/hoaxes/user/old/{username}/{id}")
     public ResponseEntity<?> oldHoaxesOfUser(
             @PathVariable String username,
             @PathVariable long id,
             @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         return ResponseEntity.ok(new RestResponse<>(hoaxService.oldHoaxesOfUser(username, id, pageable)));
+    }
+
+    @GetMapping("/v1/hoaxes/user/new/{username}/{id}")
+    public ResponseEntity<?> newHoaxesOfUser(
+            @PathVariable String username,
+            @PathVariable long id,
+            @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        return ResponseEntity.ok(new RestResponse<>(hoaxService.newHoaxesOfUser(username, id, pageable)));
     }
 
     @GetMapping("/v1/hoaxes/count/{id}/{username}")
