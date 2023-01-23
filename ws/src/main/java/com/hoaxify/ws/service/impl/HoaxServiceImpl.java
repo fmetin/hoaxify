@@ -8,6 +8,7 @@ import com.hoaxify.ws.error.HoaxifyResponseCode;
 import com.hoaxify.ws.mapper.HoaxMapper;
 import com.hoaxify.ws.repository.HoaxRepository;
 import com.hoaxify.ws.service.HoaxService;
+import com.hoaxify.ws.service.UserService;
 import com.hoaxify.ws.shared.RestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,17 +16,18 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class HoaxServiceImpl implements HoaxService {
     private final HoaxRepository hoaxRepository;
     private final HoaxMapper hoaxMapper;
 
+    private final UserService userService;
+
     @Autowired
-    public HoaxServiceImpl(HoaxRepository hoaxRepository, HoaxMapper hoaxMapper) {
+    public HoaxServiceImpl(HoaxRepository hoaxRepository, HoaxMapper hoaxMapper, UserService userService) {
         this.hoaxRepository = hoaxRepository;
         this.hoaxMapper = hoaxMapper;
+        this.userService = userService;
     }
 
     @Override
@@ -42,10 +44,7 @@ public class HoaxServiceImpl implements HoaxService {
 
     @Override
     public Page<HoaxResponseDto> userHoaxes(String username, Pageable pageable) {
-        Page<Hoax> hoaxPage = hoaxRepository.findByUser_Username(username, pageable);
-        if (hoaxPage.isEmpty())
-            throw new RestException(HoaxifyResponseCode.USER_NOT_FOUND, HttpStatus.NOT_FOUND);
-
-        return hoaxPage.map(hoaxMapper::mapHoaxToHoaxResponseDto);
+        userService.getUser(username);
+        return hoaxRepository.findByUser_Username(username, pageable).map(hoaxMapper::mapHoaxToHoaxResponseDto);
     }
 }
