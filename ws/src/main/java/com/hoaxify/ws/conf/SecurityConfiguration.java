@@ -35,7 +35,7 @@ public class SecurityConfiguration {
         http.csrf().disable();
         http.headers().frameOptions().disable();
 //        http.cors().disable();
-        String [] authenticatedUrlsForPost = {"/v1/auth"};
+        String [] authenticatedUrlsForPost = {"/v1/auth", "/v1/hoaxes/**"};
         String [] authenticatedUrlsForPut = {"/v1/user/**"};
         http.httpBasic().authenticationEntryPoint(delegatedAuthenticationEntryPoint).and().exceptionHandling();
         http.authorizeHttpRequests()

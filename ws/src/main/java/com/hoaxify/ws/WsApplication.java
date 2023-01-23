@@ -2,7 +2,7 @@ package com.hoaxify.ws;
 
 import com.hoaxify.ws.dto.CreateUserRequestDto;
 import com.hoaxify.ws.dto.HoaxRequestDto;
-import com.hoaxify.ws.entity.Hoax;
+import com.hoaxify.ws.entity.User;
 import com.hoaxify.ws.service.HoaxService;
 import com.hoaxify.ws.service.UserService;
 import org.springframework.boot.CommandLineRunner;
@@ -27,14 +27,15 @@ public class WsApplication {
                 requestDto.setUsername("user" + i);
                 requestDto.setDisplayName("display" + i);
                 requestDto.setPassword("P4ssword");
-                userService.createUser(requestDto);
+                User user = userService.createUser(requestDto);
+                for (int j = 1; j <= 2; j++) {
+                    HoaxRequestDto hoax = new HoaxRequestDto();
+                    hoax.setContent("hoax " + "(" + j + ")" + " from user " + "(" + i + ")");
+                    hoaxService.save(hoax, user);
+                }
             }
 
-            for (int i = 1; i <= 50; i++) {
-                HoaxRequestDto hoax = new HoaxRequestDto();
-                hoax.setContent("hoax" + i);
-                hoaxService.save(hoax);
-            }
+
 
         };
     }

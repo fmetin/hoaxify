@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface UserService {
 
-    void createUser(CreateUserRequestDto requestDto);
+    User createUser(CreateUserRequestDto requestDto);
 
     long countByUsername(String username);
 

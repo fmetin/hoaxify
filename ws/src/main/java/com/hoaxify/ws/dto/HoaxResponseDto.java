@@ -10,4 +10,9 @@ public class HoaxResponseDto {
     private String content;
     private LocalDateTime createdDate;
 
+    private UserResponseDto user;
+//    private String username;
+//    private String displayName;
+//    private String image;
+
 }

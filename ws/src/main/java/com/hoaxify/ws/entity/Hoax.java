@@ -2,7 +2,6 @@ package com.hoaxify.ws.entity;
 
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,4 +22,8 @@ public class Hoax {
     private String content;
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createdDate;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

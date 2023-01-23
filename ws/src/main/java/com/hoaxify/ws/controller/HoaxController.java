@@ -1,5 +1,7 @@
 package com.hoaxify.ws.controller;
 
+import com.hoaxify.ws.annotation.CurrentUser;
+import com.hoaxify.ws.conf.HoaxifyUserDetails;
 import com.hoaxify.ws.dto.HoaxRequestDto;
 import com.hoaxify.ws.service.HoaxService;
 import com.hoaxify.ws.shared.RestResponse;
@@ -22,11 +24,12 @@ public class HoaxController {
     @Autowired
     public HoaxController(HoaxService hoaxService) {
         this.hoaxService = hoaxService;
+
     }
 
     @PostMapping("/v1/hoaxes")
-    public ResponseEntity<?> hoaxes(@Valid @RequestBody HoaxRequestDto requestDto) {
-        hoaxService.save(requestDto);
+    public ResponseEntity<?> hoaxes(@Valid @RequestBody HoaxRequestDto requestDto, @CurrentUser HoaxifyUserDetails hoaxifyUserDetails) {
+        hoaxService.save(requestDto, hoaxifyUserDetails.getUser());
         return ResponseEntity.ok(new RestResponse<>());
     }
 
