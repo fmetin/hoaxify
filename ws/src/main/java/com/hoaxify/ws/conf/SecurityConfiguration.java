@@ -35,14 +35,12 @@ public class SecurityConfiguration {
         http.csrf().disable();
         http.headers().frameOptions().disable();
 //        http.cors().disable();
-        String [] authenticatedUrlsForPost = {"/v1/auth", "/v1/hoaxes/**"};
-        String [] authenticatedUrlsForPut = {"/v1/user/**"};
+        String [] permittedUrlsToGet = {"/**"};
         http.httpBasic().authenticationEntryPoint(delegatedAuthenticationEntryPoint).and().exceptionHandling();
         http.authorizeHttpRequests()
-                .requestMatchers(HttpMethod.POST, authenticatedUrlsForPost).authenticated()
-                .requestMatchers(HttpMethod.PUT, authenticatedUrlsForPut).authenticated()
+                .requestMatchers(HttpMethod.GET, permittedUrlsToGet).permitAll()
                 .and()
-                .authorizeHttpRequests().anyRequest().permitAll();
+                .authorizeHttpRequests().anyRequest().authenticated();
 
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
