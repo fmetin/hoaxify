@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -69,5 +70,19 @@ public class FileService {
                 return true;
         }
         return false;
+    }
+
+    public String saveHoaxAttachment(MultipartFile file) {
+        String fileName = generateRandomName();
+        File target = new File(appConfiguration.getUploadPath() + "/" + fileName);
+        try {
+            OutputStream outputStream = new FileOutputStream(target);
+            outputStream.write(file.getBytes());
+            outputStream.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return fileName;
     }
 }

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import { postHoax } from '../api/apiCall';
+import { postHoax, postHoaxAttachment } from '../api/apiCall';
 import { METHOD_POST } from '../redux/Constant';
 import { callApi } from '../shared/ApiCallUtil';
 import { useApiProgress } from '../shared/ApiProgress';
 import ButtonWithProgress from './ButtonWithProgress';
+import Input from './Input';
 import ProfileImageWithDefault from './ProfileImageWithDefault';
 
 const HoaxSubmit = () => {
@@ -13,6 +14,7 @@ const HoaxSubmit = () => {
     const [focused, setFocused] = useState(false);
     const [hoax, setHoax] = useState('');
     const [errors, setErrors] = useState({})
+    const [newImage, setNewImage] = useState();
     const { t } = useTranslation();
 
     const pendingApiCall = useApiProgress(METHOD_POST, '/v1/hoax');
@@ -21,6 +23,7 @@ const HoaxSubmit = () => {
         if (!focused) {
             setHoax('');
             setErrors({});
+            setNewImage();
         }
     }, [focused]);
 
@@ -44,6 +47,28 @@ const HoaxSubmit = () => {
             }
         }
     }
+
+    const onChangeFile = (event) => {
+        if (event.target.files.length < 1) {
+            return;
+        }
+
+        const file = event.target.files[0];
+        const fileReader = new FileReader();
+        fileReader.onloadend = () => {
+            setNewImage(fileReader.result);
+            uploadFile(file);
+        }
+        fileReader.readAsDataURL(file);
+
+    }
+
+    const uploadFile = async (file) => {
+        const attachment = new FormData();
+        attachment.append('file', file);
+        await callApi(postHoaxAttachment, attachment);
+    }
+
     let textAreaClass = 'form-control';
     if (errors.content) {
         textAreaClass += ' is-invalid'
@@ -66,30 +91,40 @@ const HoaxSubmit = () => {
                 <div className="invalid-feedback">
                     {errors.content}
                 </div>
-                {focused && <div className="text-end mt-2">
-                    <ButtonWithProgress
-                        className="btn btn-primary"
-                        onClick={onClickHoaxify}
-                        disabled={pendingApiCall}
-                        pendingApiCall={pendingApiCall}
-                        text={
-                            <>
-                                {t('hoaxify')}
-                            </>
-                        }
-                    >
-                    </ButtonWithProgress>
-                    <button
-                        className="btn btn-light d-inline-flex ms-1"
-                        disabled={pendingApiCall}
-                        onClick={() => {
-                            setFocused(false);
-                        }}
-                    >
-                        <i className="material-icons">close</i>
-                        {t('cancel')}
-                    </button>
-                </div>}
+                {focused &&
+                    <>
+                        <Input type="file" onChange={onChangeFile} />
+                        {newImage && 
+                        <img
+                        className="img-thumbnail"
+                         src={newImage}
+                          alt="hoax-attachment" />}
+                        <div className="text-end mt-2">
+                            <ButtonWithProgress
+                                className="btn btn-primary"
+                                onClick={onClickHoaxify}
+                                disabled={pendingApiCall}
+                                pendingApiCall={pendingApiCall}
+                                text={
+                                    <>
+                                        {t('hoaxify')}
+                                    </>
+                                }
+                            >
+                            </ButtonWithProgress>
+                            <button
+                                className="btn btn-light d-inline-flex ms-1"
+                                disabled={pendingApiCall}
+                                onClick={() => {
+                                    setFocused(false);
+                                }}
+                            >
+                                <i className="material-icons">close</i>
+                                {t('cancel')}
+                            </button>
+                        </div>
+                    </>
+                }
             </div>
         </div>
     );

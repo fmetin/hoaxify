@@ -71,3 +71,6 @@ export const getHoaxesCountOfUser = (id, username) => {
     return axios.get(`/v1/hoaxes/count/${id}/${username}`);
 }
 
+export const postHoaxAttachment = (body) => {
+    return axios.post(`/v1/file/hoax-attachment`, body);
+}
