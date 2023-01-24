@@ -5,6 +5,7 @@ import { postHoax, postHoaxAttachment } from '../api/apiCall';
 import { METHOD_POST } from '../redux/Constant';
 import { callApi } from '../shared/ApiCallUtil';
 import { useApiProgress } from '../shared/ApiProgress';
+import AutoUploadImage from './AutoUploadImage';
 import ButtonWithProgress from './ButtonWithProgress';
 import Input from './Input';
 import ProfileImageWithDefault from './ProfileImageWithDefault';
@@ -17,7 +18,8 @@ const HoaxSubmit = () => {
     const [newImage, setNewImage] = useState();
     const { t } = useTranslation();
 
-    const pendingApiCall = useApiProgress(METHOD_POST, '/v1/hoax');
+    const pendingApiCall = useApiProgress(METHOD_POST, '/v1/hoaxes', true);
+    const pendingFileUpload = useApiProgress(METHOD_POST, '/v1/file/hoax-attachment', true);
 
     useEffect(() => {
         if (!focused) {
@@ -93,17 +95,13 @@ const HoaxSubmit = () => {
                 </div>
                 {focused &&
                     <>
-                        <Input type="file" onChange={onChangeFile} />
-                        {newImage && 
-                        <img
-                        className="img-thumbnail"
-                         src={newImage}
-                          alt="hoax-attachment" />}
+                        {!newImage && <Input type="file" onChange={onChangeFile} />}
+                        {newImage && <AutoUploadImage image={newImage} uploading={pendingFileUpload} />}
                         <div className="text-end mt-2">
                             <ButtonWithProgress
                                 className="btn btn-primary"
                                 onClick={onClickHoaxify}
-                                disabled={pendingApiCall}
+                                disabled={pendingApiCall || pendingFileUpload}
                                 pendingApiCall={pendingApiCall}
                                 text={
                                     <>
@@ -114,7 +112,7 @@ const HoaxSubmit = () => {
                             </ButtonWithProgress>
                             <button
                                 className="btn btn-light d-inline-flex ms-1"
-                                disabled={pendingApiCall}
+                                disabled={pendingApiCall || pendingFileUpload}
                                 onClick={() => {
                                     setFocused(false);
                                 }}
