@@ -105,7 +105,7 @@ public class FileService {
 
     @Scheduled(timeUnit = TimeUnit.MINUTES, fixedRate = 5)
     public void cleanupStorage(){
-        List<FileAttachment> fileAttachmentList = fileAttachmentRepository.findByCreatedDateBeforeAndHoaxNull(LocalDateTime.now().minusSeconds(TimeUnit.MINUTES.toMillis(5)));
+        List<FileAttachment> fileAttachmentList = fileAttachmentRepository.findByCreatedDateBeforeAndHoaxNull(LocalDateTime.now().minusMinutes(5));
         for (FileAttachment file :
                 fileAttachmentList) {
             log.info("Removing file: " + file.getName());
