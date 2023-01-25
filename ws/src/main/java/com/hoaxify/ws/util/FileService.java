@@ -1,6 +1,10 @@
 package com.hoaxify.ws.util;
 
 import com.hoaxify.ws.conf.AppConfiguration;
+import com.hoaxify.ws.dto.HoaxAttachmentResponseDto;
+import com.hoaxify.ws.entity.FileAttachment;
+import com.hoaxify.ws.mapper.FileAttachmentMapper;
+import com.hoaxify.ws.repository.FileAttachmentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +17,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.UUID;
 
@@ -21,11 +26,16 @@ import java.util.UUID;
 public class FileService {
 
 
+    private final FileAttachmentRepository fileAttachmentRepository;
+
+    private final FileAttachmentMapper fileAttachmentMapper;
     private final AppConfiguration appConfiguration;
     private final Tika tika;
 
     @Autowired
-    public FileService(AppConfiguration appConfiguration, Tika tika) {
+    public FileService(FileAttachmentRepository fileAttachmentRepository, FileAttachmentMapper fileAttachmentMapper, AppConfiguration appConfiguration, Tika tika) {
+        this.fileAttachmentRepository = fileAttachmentRepository;
+        this.fileAttachmentMapper = fileAttachmentMapper;
         this.appConfiguration = appConfiguration;
         this.tika = tika;
     }
@@ -72,7 +82,7 @@ public class FileService {
         return false;
     }
 
-    public String saveHoaxAttachment(MultipartFile file) {
+    public HoaxAttachmentResponseDto saveHoaxAttachment(MultipartFile file) {
         String fileName = generateRandomName();
         File target = new File(appConfiguration.getUploadPath() + "/" + fileName);
         try {
@@ -82,7 +92,9 @@ public class FileService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        return fileName;
+        FileAttachment attachment = new FileAttachment();
+        attachment.setName(fileName);
+        attachment.setCreatedDate(LocalDateTime.now());
+        return fileAttachmentMapper.mapFileAttachmentToHoaxAttachmentResponseDto(fileAttachmentRepository.save(attachment));
     }
 }

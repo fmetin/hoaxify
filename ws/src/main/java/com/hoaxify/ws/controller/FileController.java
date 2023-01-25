@@ -22,6 +22,6 @@ public class FileController {
 
     @PostMapping("/v1/file/hoax-attachment")
     public ResponseEntity<?> saveAttachment(MultipartFile file) {
-        return ResponseEntity.ok(new RestResponse<>(new HoaxAttachmentResponseDto(fileService.saveHoaxAttachment(file))));
+        return ResponseEntity.ok(new RestResponse<>(fileService.saveHoaxAttachment(file)));
     }
 }

@@ -27,7 +27,7 @@ const HoaxFeed = () => {
                 await callApi(getHoaxesCount, firstHoaxId);
             setNewHoaxCount(response.data.detail.count);
         }
-        let looper = setInterval(getCount, 1000)
+        let looper = setInterval(getCount, 10000)
         return function cleanUp() {
             clearInterval(looper);
         }
