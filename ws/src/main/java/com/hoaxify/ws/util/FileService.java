@@ -8,6 +8,8 @@ import com.hoaxify.ws.repository.FileAttachmentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,10 +21,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.Base64;
+import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
+@EnableScheduling
 public class FileService {
 
 
@@ -96,5 +101,16 @@ public class FileService {
         attachment.setName(fileName);
         attachment.setCreatedDate(LocalDateTime.now());
         return fileAttachmentMapper.mapFileAttachmentToHoaxAttachmentResponseDto(fileAttachmentRepository.save(attachment));
+    }
+
+    @Scheduled(timeUnit = TimeUnit.MINUTES, fixedRate = 5)
+    public void cleanupStorage(){
+        List<FileAttachment> fileAttachmentList = fileAttachmentRepository.findByCreatedDateBeforeAndHoaxNull(LocalDateTime.now().minusSeconds(TimeUnit.MINUTES.toMillis(5)));
+        for (FileAttachment file :
+                fileAttachmentList) {
+            log.info("Removing file: " + file.getName());
+            deleteFile(file.getName());
+            fileAttachmentRepository.deleteById(file.getId());
+        }
     }
 }
