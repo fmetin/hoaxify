@@ -10,5 +10,6 @@ import java.time.LocalDateTime;
 public class FileAttachmentResponseDto {
     private long id;
     private String name;
+    private String fileType;
     private LocalDateTime createdDate;
 }

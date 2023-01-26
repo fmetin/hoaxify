@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
         user.setDisplayName(request.getDisplayName());
         if (request.getImage() != null && !request.getImage().isEmpty()) {
             String oldImage = user.getImage();
-            fileService.deleteFile(oldImage);
+            fileService.deleteProfileImage(oldImage);
             String storedFileName = fileService.writeBase64EncodedStringToFile(request.getImage());
             user.setImage(storedFileName);
         }
