@@ -6,7 +6,7 @@ import ProfileImageWithDefault from './ProfileImageWithDefault';
 
 const HoaxView = (props) => {
     const { hoax } = props;
-    const { user, content, createdDate } = hoax;
+    const { user, content, createdDate, fileAttachment } = hoax;
     const { username, displayName, image } = user;
 
     const { i18n } = useTranslation();
@@ -29,6 +29,11 @@ const HoaxView = (props) => {
             <div className="ps-5">
                 {content}
             </div>
+            {fileAttachment && (
+                <div className="ps-5">
+                    <img className="img-fluid" src={'images/' + fileAttachment.name} alt="content" />
+                </div>
+            )}
         </div>
     );
 };

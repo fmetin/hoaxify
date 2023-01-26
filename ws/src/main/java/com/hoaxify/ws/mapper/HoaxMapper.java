@@ -9,7 +9,12 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Mapper(componentModel = "spring", uses = {UserMapper.class, LocalDateTimeMapper.class})
+@Mapper(
+        componentModel = "spring",
+        uses = {UserMapper.class,
+                FileAttachmentMapper.class,
+                LocalDateTimeMapper.class
+        })
 public abstract class HoaxMapper {
 
     @Autowired

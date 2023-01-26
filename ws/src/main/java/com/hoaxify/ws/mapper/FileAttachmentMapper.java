@@ -1,12 +1,11 @@
 package com.hoaxify.ws.mapper;
 
-import com.hoaxify.ws.dto.HoaxAttachmentResponseDto;
+import com.hoaxify.ws.dto.FileAttachmentResponseDto;
 import com.hoaxify.ws.entity.FileAttachment;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring",
-        uses = {HoaxMapper.class})
+@Mapper(componentModel = "spring")
 public abstract class FileAttachmentMapper {
 
-    public abstract HoaxAttachmentResponseDto mapFileAttachmentToHoaxAttachmentResponseDto(FileAttachment fileAttachment);
+    public abstract FileAttachmentResponseDto mapFileAttachmentToHoaxAttachmentResponseDto(FileAttachment fileAttachment);
 }

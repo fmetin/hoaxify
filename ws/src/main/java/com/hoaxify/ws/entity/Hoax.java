@@ -26,4 +26,7 @@ public class Hoax {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToOne(mappedBy = "hoax")
+    private FileAttachment fileAttachment;
 }

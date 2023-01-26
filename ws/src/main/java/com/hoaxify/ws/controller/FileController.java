@@ -1,6 +1,5 @@
 package com.hoaxify.ws.controller;
 
-import com.hoaxify.ws.dto.HoaxAttachmentResponseDto;
 import com.hoaxify.ws.shared.RestResponse;
 import com.hoaxify.ws.util.FileService;
 import org.springframework.beans.factory.annotation.Autowired;

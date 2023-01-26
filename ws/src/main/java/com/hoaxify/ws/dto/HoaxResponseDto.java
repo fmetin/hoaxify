@@ -8,5 +8,6 @@ public class HoaxResponseDto {
     private String content;
     private long createdDate;
     private UserResponseDto user;
+    private FileAttachmentResponseDto fileAttachment;
 
 }

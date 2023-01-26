@@ -7,9 +7,8 @@ import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
-public class HoaxAttachmentResponseDto {
+public class FileAttachmentResponseDto {
     private long id;
     private String name;
     private LocalDateTime createdDate;
-    private HoaxResponseDto hoax;
 }

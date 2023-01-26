@@ -1,7 +1,7 @@
 package com.hoaxify.ws.util;
 
 import com.hoaxify.ws.conf.AppConfiguration;
-import com.hoaxify.ws.dto.HoaxAttachmentResponseDto;
+import com.hoaxify.ws.dto.FileAttachmentResponseDto;
 import com.hoaxify.ws.entity.FileAttachment;
 import com.hoaxify.ws.mapper.FileAttachmentMapper;
 import com.hoaxify.ws.repository.FileAttachmentRepository;
@@ -87,7 +87,7 @@ public class FileService {
         return false;
     }
 
-    public HoaxAttachmentResponseDto saveHoaxAttachment(MultipartFile file) {
+    public FileAttachmentResponseDto saveHoaxAttachment(MultipartFile file) {
         String fileName = generateRandomName();
         File target = new File(appConfiguration.getUploadPath() + "/" + fileName);
         try {
