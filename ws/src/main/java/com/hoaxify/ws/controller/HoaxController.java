@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -83,7 +84,8 @@ public class HoaxController {
     }
 
     @DeleteMapping("/v1/hoaxes/{id}")
-    public ResponseEntity<?> deleteHoax(@PathVariable long id){
+    @PreAuthorize("@hoaxSecurity.isAllowedToDelete(#id, principal.user)")
+    public ResponseEntity<?> deleteHoax(@PathVariable long id) {
         hoaxService.delete(id);
         return ResponseEntity.ok(new RestResponse<>());
     }
