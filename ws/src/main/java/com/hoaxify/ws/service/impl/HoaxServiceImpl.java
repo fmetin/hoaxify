@@ -11,6 +11,7 @@ import com.hoaxify.ws.repository.FileAttachmentRepository;
 import com.hoaxify.ws.repository.HoaxRepository;
 import com.hoaxify.ws.service.HoaxService;
 import com.hoaxify.ws.service.UserService;
+import com.hoaxify.ws.util.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,15 +27,16 @@ public class HoaxServiceImpl implements HoaxService {
     private final HoaxRepository hoaxRepository;
     private final HoaxMapper hoaxMapper;
     private final UserService userService;
-
     private final FileAttachmentRepository fileAttachmentRepository;
+    private final FileService fileService;
 
     @Autowired
-    public HoaxServiceImpl(HoaxRepository hoaxRepository, HoaxMapper hoaxMapper, UserService userService, FileAttachmentRepository fileAttachmentRepository) {
+    public HoaxServiceImpl(HoaxRepository hoaxRepository, HoaxMapper hoaxMapper, UserService userService, FileAttachmentRepository fileAttachmentRepository, FileService fileService) {
         this.hoaxRepository = hoaxRepository;
         this.hoaxMapper = hoaxMapper;
         this.userService = userService;
         this.fileAttachmentRepository = fileAttachmentRepository;
+        this.fileService = fileService;
     }
 
     @Override
@@ -100,6 +102,9 @@ public class HoaxServiceImpl implements HoaxService {
 
     @Override
     public void delete(long id) {
+        Hoax hoax = hoaxRepository.getReferenceById(id);
+        if (hoax.getFileAttachment() != null)
+            fileService.deleteAttachmentFile(hoax.getFileAttachment().getName());
         hoaxRepository.deleteById(id);
     }
 
