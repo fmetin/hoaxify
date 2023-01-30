@@ -74,3 +74,7 @@ export const getHoaxesCountOfUser = (id, username) => {
 export const postHoaxAttachment = (body) => {
     return axios.post(`/v1/file/hoax-attachment`, body);
 }
+
+export const deleteHoax = (id) => {
+    return axios.delete(`/v1/hoaxes/${id}`);
+}
