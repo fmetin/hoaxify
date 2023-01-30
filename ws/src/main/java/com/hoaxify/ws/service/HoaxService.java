@@ -28,4 +28,6 @@ public interface HoaxService {
     List<HoaxResponseDto> getNewHoaxes(long id, Pageable pageable);
 
     List<HoaxResponseDto> newHoaxesOfUser(String username, long id, Pageable pageable);
+
+    void delete(long id);
 }

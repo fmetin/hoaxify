@@ -81,4 +81,10 @@ public class HoaxController {
     public ResponseEntity<?> getHoaxesCountOfUser(@PathVariable long id, @PathVariable String username) {
         return ResponseEntity.ok(new RestResponse<>(hoaxService.getHoaxesCountOfUser(id, username)));
     }
+
+    @DeleteMapping("/v1/hoaxes/{id}")
+    public ResponseEntity<?> deleteHoax(@PathVariable long id){
+        hoaxService.delete(id);
+        return ResponseEntity.ok(new RestResponse<>());
+    }
 }

@@ -98,6 +98,11 @@ public class HoaxServiceImpl implements HoaxService {
         return hoaxRepository.findAll(spec, pageable.getSort()).stream().map(hoaxMapper::mapHoaxToHoaxResponseDto).collect(Collectors.toList());
     }
 
+    @Override
+    public void delete(long id) {
+        hoaxRepository.deleteById(id);
+    }
+
     Specification<Hoax> idGreaterThan(long id) {
         return (root, query, criteriaBuilder) -> criteriaBuilder.greaterThan(root.get("id"), id);
     }
