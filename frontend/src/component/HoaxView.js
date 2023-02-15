@@ -74,6 +74,8 @@ const HoaxView = (props) => {
                 onClickCancel={onClickCancel}
                 onClickConfirm={onClickDelete}
                 pendingApiCall={pendingApiCall}
+                title={t('Delete Hoax')}
+                okButton={t('Delete Hoax')}
                 message={
                     <div>
                         <div>

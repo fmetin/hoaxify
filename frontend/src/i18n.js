@@ -31,6 +31,8 @@ i18next.use(initReactI18next).init({
                 'There are new hoaxes': 'There are new hoaxes',
                 'Delete Hoax': 'Delete Hoax',
                 'Are you sure to delete hoax?': 'Are you sure to delete hoax?',
+                'Delete My Acccount': 'Delete My Acccount',
+                'Are you sure to delete your account?': 'Are you sure to delete your account?',
             }
         },
         tr: {
@@ -59,6 +61,8 @@ i18next.use(initReactI18next).init({
                 'There are new hoaxes': 'Yeni hoaxlar var',
                 'Delete Hoax': `Hoax' u sil`,
                 'Are you sure to delete hoax?': `Hoax' u silmek istediğinizden emin misiniz?`,
+                'Delete My Acccount': 'Hesabımı sil',
+                'Are you sure to delete your account?': 'Hesabınızı silmek istediğinizden emin misiniz?',
             }
         }
     },

@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { updateUser } from '../api/apiCall';
+import { deleteUser, updateUser } from '../api/apiCall';
 import { updateSuccess } from '../redux/authActions';
-import { METHOD_PUT } from '../redux/Constant';
+import { METHOD_PUT, METHOD_DELETE } from '../redux/Constant';
 import { callApi } from '../shared/ApiCallUtil';
 import { useApiProgress } from '../shared/ApiProgress';
 import ButtonWithProgress from './ButtonWithProgress';
 import Input from './Input';
+import Modal from './Modal';
 import ProfileImageWithDefault from './ProfileImageWithDefault';
 const ProfileCard = (props) => {
     const [user, setUser] = useState({});
@@ -17,6 +18,7 @@ const ProfileCard = (props) => {
     const [editable, setEditable] = useState(false);
     const [newImage, setNewImage] = useState();
     const [validationErrors, setValidationErrors] = useState({});
+    const [modalVisible, setModalVisible] = useState(false);
     const dispatch = useDispatch();
 
     const { username: loggedInUsername } = useSelector(store => ({ username: store.username }));
@@ -89,7 +91,19 @@ const ProfileCard = (props) => {
         fileReader.readAsDataURL(file);
 
     }
+
+    const onClickCancel = () => {
+        setModalVisible(false);
+    }
+
+    const onClickDeleteUser = async () => {
+        await callApi(deleteUser, username);
+        setModalVisible(false);
+    }
+
     const pendingApiCall = useApiProgress(METHOD_PUT, '/v1/user/' + username);
+    const pendingApiCallDeleteUser = useApiProgress(METHOD_DELETE, '/v1/user/');
+    
     const { displayName: displayNameError, image: imageError } = validationErrors;
     return (
         <div className="card text-center">
@@ -109,13 +123,27 @@ const ProfileCard = (props) => {
                         <h3>
                             {displayName}@{username}
                         </h3>
-                        {editable && <button className="btn btn-success d-inline-flex"
-                            onClick={() => {
-                                setInEditMode(true)
-                            }}>
-                            <i className="material-icons">edit</i>
-                            {t('edit')}
-                        </button>}
+                        {editable && (
+                            <>
+                                <button className="btn btn-success d-inline-flex"
+                                    onClick={() => {
+                                        setInEditMode(true)
+                                    }}>
+                                    <i className="material-icons">edit</i>
+                                    {t('edit')}
+                                </button>
+                                <div className="pt-2">
+                                    <button className="btn btn-danger d-inline-flex"
+                                        onClick={() => {
+                                            setModalVisible(true);
+                                        }}>
+                                        <i className="material-icons">directions_run</i>
+                                        {t('Delete My Account')}
+                                    </button>
+                                </div>
+                            </>
+
+                        )}
                     </>
                 )}
                 {inEditMode &&
@@ -162,6 +190,15 @@ const ProfileCard = (props) => {
                     </div>
                 }
             </div>
+            <Modal
+                visible={modalVisible}
+                title={t('Delete My Acccount')}
+                okButton={t('Delete My Acccount')}
+                onClickCancel={onClickCancel}
+                onClickConfirm={onClickDeleteUser}
+                pendingApiCall={pendingApiCallDeleteUser}
+                message={t('Are you sure to delete your account?')}
+            />
         </div>
     );
 
