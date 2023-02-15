@@ -13,6 +13,7 @@ import com.hoaxify.ws.service.HoaxService;
 import com.hoaxify.ws.service.UserService;
 import com.hoaxify.ws.util.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -31,7 +32,7 @@ public class HoaxServiceImpl implements HoaxService {
     private final FileService fileService;
 
     @Autowired
-    public HoaxServiceImpl(HoaxRepository hoaxRepository, HoaxMapper hoaxMapper, UserService userService, FileAttachmentRepository fileAttachmentRepository, FileService fileService) {
+    public HoaxServiceImpl(HoaxRepository hoaxRepository, HoaxMapper hoaxMapper, @Lazy UserService userService, FileAttachmentRepository fileAttachmentRepository, FileService fileService) {
         this.hoaxRepository = hoaxRepository;
         this.hoaxMapper = hoaxMapper;
         this.userService = userService;
@@ -106,6 +107,13 @@ public class HoaxServiceImpl implements HoaxService {
         if (hoax.getFileAttachment() != null)
             fileService.deleteAttachmentFile(hoax.getFileAttachment().getName());
         hoaxRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteHoaxesOfUser(String username) {
+        Specification<Hoax> spec = userIs(username);
+        List<Hoax> hoaxList = hoaxRepository.findAll(spec);
+        hoaxRepository.deleteAll(hoaxList);
     }
 
     Specification<Hoax> idGreaterThan(long id) {

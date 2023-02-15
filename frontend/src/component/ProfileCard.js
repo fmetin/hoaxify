@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { deleteUser, updateUser } from '../api/apiCall';
-import { updateSuccess } from '../redux/authActions';
+import { logoutSuccess, updateSuccess } from '../redux/authActions';
 import { METHOD_PUT, METHOD_DELETE } from '../redux/Constant';
 import { callApi } from '../shared/ApiCallUtil';
 import { useApiProgress } from '../shared/ApiProgress';
@@ -20,6 +20,7 @@ const ProfileCard = (props) => {
     const [validationErrors, setValidationErrors] = useState({});
     const [modalVisible, setModalVisible] = useState(false);
     const dispatch = useDispatch();
+    const history = useHistory();
 
     const { username: loggedInUsername } = useSelector(store => ({ username: store.username }));
     const routeParams = useParams();
@@ -99,6 +100,8 @@ const ProfileCard = (props) => {
     const onClickDeleteUser = async () => {
         await callApi(deleteUser, username);
         setModalVisible(false);
+        dispatch(logoutSuccess());
+        history.push('/');
     }
 
     const pendingApiCall = useApiProgress(METHOD_PUT, '/v1/user/' + username);

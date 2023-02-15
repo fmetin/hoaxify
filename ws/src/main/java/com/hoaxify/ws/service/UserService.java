@@ -20,4 +20,6 @@ public interface UserService {
     UserResponseDto getUser(String username);
 
     UserResponseDto updateUser(UpdateUserRequestDto request, String username);
+
+    void deleteUser(String username);
 }

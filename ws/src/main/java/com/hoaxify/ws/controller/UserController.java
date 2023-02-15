@@ -49,4 +49,11 @@ public class UserController {
                                         @PathVariable String username) {
         return ResponseEntity.ok(new RestResponse<>(userService.updateUser(request, username)));
     }
+
+    @DeleteMapping("/v1/user/{username}")
+    @PreAuthorize("#username == principal.username")
+    public ResponseEntity<?> deleteUser(@PathVariable String username) {
+        userService.deleteUser(username);
+        return ResponseEntity.ok(new RestResponse<>());
+    }
 }

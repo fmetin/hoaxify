@@ -38,10 +38,10 @@ public class SecurityConfiguration {
         String [] permittedUrlsToGet = {"/**"};
         http.httpBasic().authenticationEntryPoint(delegatedAuthenticationEntryPoint).and().exceptionHandling();
         http.authorizeHttpRequests()
-                .anyRequest().permitAll();
-//                .requestMatchers(HttpMethod.GET, permittedUrlsToGet).permitAll()
-//                .and()
-//                .authorizeHttpRequests().anyRequest().authenticated();
+//                .anyRequest().permitAll();
+                .requestMatchers(HttpMethod.GET, permittedUrlsToGet).permitAll()
+                .and()
+                .authorizeHttpRequests().anyRequest().authenticated();
 
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 

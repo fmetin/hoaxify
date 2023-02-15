@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
+    long deleteByUsername(String username);
     long countByUsername(String username);
     User findByUsername(String username);
     Page<User> findByIdNot(long id, Pageable pageable);

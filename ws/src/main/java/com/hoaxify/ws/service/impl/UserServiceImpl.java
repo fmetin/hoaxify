@@ -6,6 +6,7 @@ import com.hoaxify.ws.dto.UserResponseDto;
 import com.hoaxify.ws.entity.User;
 import com.hoaxify.ws.mapper.UserMapper;
 import com.hoaxify.ws.repository.UserRepository;
+import com.hoaxify.ws.service.HoaxService;
 import com.hoaxify.ws.service.UserService;
 import com.hoaxify.ws.shared.RestException;
 import com.hoaxify.ws.util.FileService;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.hoaxify.ws.error.HoaxifyResponseCode.USER_NOT_FOUND;
 
@@ -28,12 +30,15 @@ public class UserServiceImpl implements UserService {
 
     private final FileService fileService;
 
+    private final HoaxService hoaxService;
+
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, FileService fileService) {
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, FileService fileService, HoaxService hoaxService) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.fileService = fileService;
+        this.hoaxService = hoaxService;
     }
 
     @Override
@@ -74,6 +79,13 @@ public class UserServiceImpl implements UserService {
         setUserNewValues(request, user);
         userRepository.save(user);
         return userMapper.mapUserToUserResponseDto(user);
+    }
+
+    @Override
+    @Transactional
+    public void deleteUser(String username) {
+        hoaxService.deleteHoaxesOfUser(username);
+        userRepository.deleteByUsername(username);
     }
 
     private void setUserNewValues(UpdateUserRequestDto request, User user) {
