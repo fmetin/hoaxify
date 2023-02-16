@@ -3,6 +3,7 @@ package com.hoaxify.ws.util;
 import com.hoaxify.ws.conf.AppConfiguration;
 import com.hoaxify.ws.dto.FileAttachmentResponseDto;
 import com.hoaxify.ws.entity.FileAttachment;
+import com.hoaxify.ws.entity.User;
 import com.hoaxify.ws.mapper.FileAttachmentMapper;
 import com.hoaxify.ws.repository.FileAttachmentRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -125,5 +126,14 @@ public class FileService {
             deleteAttachmentFile(file.getName());
             fileAttachmentRepository.deleteById(file.getId());
         }
+    }
+
+    public void deleteAllStoredFilesForUser(User user) {
+        deleteProfileImage(user.getImage());
+        List<FileAttachment> filesToBeRemoved = fileAttachmentRepository.findByHoax_User(user);
+        for (FileAttachment fileAttachment : filesToBeRemoved) {
+            deleteAttachmentFile(fileAttachment.getName());
+        }
+        
     }
 }

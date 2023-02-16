@@ -1,14 +1,13 @@
 package com.hoaxify.ws.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 import static com.hoaxify.ws.error.HoaxifyResponseMessage.*;
 
@@ -30,5 +29,8 @@ public class User {
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$", message = MSG_VALIDATION_CONSTRAINT_PASSWORD_PATTERN)
     private String password;
     private String image;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Hoax> hoaxes;
 
 }

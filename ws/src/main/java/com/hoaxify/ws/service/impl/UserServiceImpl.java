@@ -6,7 +6,6 @@ import com.hoaxify.ws.dto.UserResponseDto;
 import com.hoaxify.ws.entity.User;
 import com.hoaxify.ws.mapper.UserMapper;
 import com.hoaxify.ws.repository.UserRepository;
-import com.hoaxify.ws.service.HoaxService;
 import com.hoaxify.ws.service.UserService;
 import com.hoaxify.ws.shared.RestException;
 import com.hoaxify.ws.util.FileService;
@@ -30,15 +29,12 @@ public class UserServiceImpl implements UserService {
 
     private final FileService fileService;
 
-    private final HoaxService hoaxService;
-
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, FileService fileService, HoaxService hoaxService) {
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, FileService fileService) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.fileService = fileService;
-        this.hoaxService = hoaxService;
     }
 
     @Override
@@ -84,8 +80,9 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void deleteUser(String username) {
-        hoaxService.deleteHoaxesOfUser(username);
-        userRepository.deleteByUsername(username);
+        User user = userRepository.findByUsername(username);
+        fileService.deleteAllStoredFilesForUser(user);
+        userRepository.delete(user);
     }
 
     private void setUserNewValues(UpdateUserRequestDto request, User user) {
